@@ -3,7 +3,7 @@ import { ofetch } from 'ofetch';
 export const useFetchCustomWithCount = async <T = unknown>(
   url: string,
   options: any
-): Promise<{ data: T; totalCount?: number }> => {
+): Promise<{ data: T | undefined; totalCount?: number }> => {
   const config = useRuntimeConfig();
   const accessToken = useCookie('access_token');
 
@@ -26,7 +26,7 @@ export const useFetchCustomWithCount = async <T = unknown>(
   };
 };
 
-export const useFetchCustom = async <T = unknown>(url: string, options: any): Promise<T> => {
+export const useFetchCustom = async <T = unknown>(url: string, options: any): Promise<T | undefined> => {
   const config = useRuntimeConfig();
   const accessToken = useCookie('access_token');
 
