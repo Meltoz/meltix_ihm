@@ -1,11 +1,12 @@
 import { ofetch } from 'ofetch';
+import { accessTokenName } from '~/utils/constants';
 
 export const useFetchCustomWithCount = async <T = unknown>(
   url: string,
   options: any
-): Promise<{ data: T | undefined; totalCount?: number }> => {
+): Promise<{ data: T; totalCount: number }> => {
   const config = useRuntimeConfig();
-  const accessToken = useCookie('access_token');
+  const accessToken = useCookie(accessTokenName);
 
   const headers: HeadersInit = {};
 
@@ -28,7 +29,7 @@ export const useFetchCustomWithCount = async <T = unknown>(
 
 export const useFetchCustom = async <T = unknown>(url: string, options: any): Promise<T | undefined> => {
   const config = useRuntimeConfig();
-  const accessToken = useCookie('access_token');
+  const accessToken = useCookie(accessTokenName);
 
   const headers: HeadersInit = {};
 

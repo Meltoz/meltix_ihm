@@ -10,9 +10,11 @@ export default defineNuxtConfig({
     { src: '~/plugins/gsap.ts', mode: 'client', ssr: false },
     { src: '~/plugins/lenis.ts', mode: 'client', ssr: false },
   ],
-  modules: ['@nuxtjs/i18n'],
+  modules: ['@nuxt/ui', '@nuxtjs/i18n'],
   runtimeConfig: {
-    public: {},
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_URL,
+    },
   },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
