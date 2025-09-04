@@ -1,8 +1,8 @@
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router';
 
 export function usePagination() {
-  const route = useRoute()
-  const router = useRouter()
+  const route = useRoute();
+  const router = useRouter();
 
   // page avec getter/setter
   const page = computed({
@@ -11,26 +11,26 @@ export function usePagination() {
       router.push({
         query: {
           ...route.query,
-          page: val
-        }
-      })
-    }
-  })
+          page: val,
+        },
+      });
+    },
+  });
 
   // recherche avec getter/setter
   const q = computed({
     get: () => route.query.q ?? '',
     set: (val: string) => {
-      const query: Record<string, any> = { ...route.query, q: val || undefined }
+      const query: Record<string, any> = { ...route.query, q: val || undefined };
 
       // si aucune page spécifiée dans l’URL → repartir à 0
       if (!('page' in route.query)) {
-        query.page = 0
+        query.page = 0;
       }
 
-      router.push({ query })
-    }
-  })
+      router.push({ query });
+    },
+  });
 
-  return { page, q }
+  return { page, q };
 }
