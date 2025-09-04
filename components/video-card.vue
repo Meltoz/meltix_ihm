@@ -2,7 +2,8 @@
 import type { VideoCard } from '~/models/video';
 
 const props = defineProps<{
-  video: VideoCard
+  video: VideoCard,
+  size: 's' | 'm' | 'l',
 }>();
 
 const emit = defineEmits<{
