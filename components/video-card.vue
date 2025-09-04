@@ -1,10 +1,13 @@
 <script setup lang="ts">
+
 import type { VideoCard } from '~/models/video';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   video: VideoCard,
-  size: 's' | 'm' | 'l',
-}>();
+  size?: 's' | 'm' | 'l';
+}>(), {
+  size: 'm'
+});
 
 const emit = defineEmits<{
   load: [boolean]
@@ -33,7 +36,8 @@ const calcDuration = (seconds: number) => {
 <template>
   <div class=" w-full cursor-pointer space-y-5" @click="navigateTo(`/video/${video.slug}`)">
     <img :src="`https://localhost:7214/api/video/getthumbnail?slug=${video.slug}`"
-         class="h-80 w-full object-cover"
+         class="w-full object-cover"
+         :class="size === 's' ? 'h-40' : size === 'm' ? 'h-60' : 'h-80'"
          alt="Image"
          @load="loaded"
     />
