@@ -31,11 +31,10 @@ export const getAllVideos = async (
   };
 };
 
-export const getDetail = async (slug: string): Promise<Video> =>{
+export const getDetail = async (slug: string): Promise<Video> => {
   const params = new URLSearchParams({
-    slug: slug
+    slug: slug,
   });
 
-  return await useFetchCustom<Video>(`${endpoint}/getVideo?${params.toString()}`,
-    HTTP_METHODS.GET);
-}
+  return await useFetchCustom<Video>(`${endpoint}/getVideo?${params.toString()}`, HTTP_METHODS.GET);
+};

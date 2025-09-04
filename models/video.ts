@@ -9,7 +9,7 @@ export interface Video {
   duration: number;
 }
 
-export interface VideoCard{
+export interface VideoCard {
   title: string;
   category: string;
   slug: string;

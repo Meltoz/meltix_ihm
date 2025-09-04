@@ -17,9 +17,9 @@ export const useAllVideos = (pageIndex: Ref<number>, pageSize: number, search: R
 };
 
 export const useDetailVideo = (slug: Ref<string>) => {
-  const {data, isPending, isError, error} = useQuery({
+  const { data, isPending, isError, error } = useQuery({
     queryKey: ['video', slug],
-    queryFn: () => getDetail(unref(slug))
+    queryFn: () => getDetail(unref(slug)),
   });
 
   return {
@@ -27,5 +27,5 @@ export const useDetailVideo = (slug: Ref<string>) => {
     isVideoLoading: isPending,
     isVideoError: isError,
     videoError: error,
-  }
-}
+  };
+};
