@@ -13,23 +13,28 @@ useHead({
 const {page, q} = usePagination();
 const pageSize = 4*5;
 
-
-
 const loadedCount = ref(0)
 const totalImages = computed(() => allVideos.value?.videos?.length || 0)
 const allLoaded = computed(() => totalImages.value > 0 && loadedCount.value >= totalImages.value)
 
-const {allVideos} = useAllVideos(page, pageSize, q);
+const {allVideos, allVideoRefrech} = useAllVideos(page, pageSize, q);
 
 const onImageVideoLoad = () =>{
   loadedCount.value++;
 }
+
+onMounted(() => {
+  allVideoRefrech();
+})
 </script>
 
 <template>
   <div class="">
     <section class="grid grid-cols-4 gap-5 mx-10">
-      <video-card v-for="video in allVideos?.videos" :video="video" @load="onImageVideoLoad"/>
+      <video-card v-for="video in allVideos?.videos"
+                  :video="video"
+                  size="l"
+                  @load="onImageVideoLoad"/>
 
     </section>
     <div class="flex justify-center my-10">
