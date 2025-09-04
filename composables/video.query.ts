@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/vue-query';
-import { getAllVideos } from '~/services/video.service';
+import { getAllVideos, getDetail } from '~/services/video.service';
 
 export const useAllVideos = (pageIndex: Ref<number>, pageSize: number, search: Ref<string>) => {
   const { data, isPending, isError, error } = useQuery({
@@ -15,3 +15,17 @@ export const useAllVideos = (pageIndex: Ref<number>, pageSize: number, search: R
     allVideoError: error,
   };
 };
+
+export const useDetailVideo = (slug: Ref<string>) => {
+  const {data, isPending, isError, error} = useQuery({
+    queryKey: ['video', slug],
+    queryFn: () => getDetail(unref(slug))
+  });
+
+  return {
+    video: data,
+    isVideoLoading: isPending,
+    isVideoError: isError,
+    videoError: error,
+  }
+}

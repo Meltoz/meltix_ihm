@@ -8,3 +8,10 @@ export interface Video {
   description: string;
   duration: number;
 }
+
+export interface VideoCard{
+  title: string;
+  category: string;
+  slug: string;
+  duration: string;
+}

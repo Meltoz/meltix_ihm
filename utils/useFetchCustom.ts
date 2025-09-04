@@ -30,7 +30,7 @@ export const useFetchCustomWithCount = async <T = unknown>(
 export const useFetchCustom = async <T = unknown>(
   url: string,
   options: any
-): Promise<T | undefined> => {
+): Promise<T> => {
   const config = useRuntimeConfig();
   const accessToken = useCookie(accessTokenName);
 

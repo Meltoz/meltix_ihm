@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Video } from '~/models/video';
+import type { VideoCard } from '~/models/video';
 
 const props = defineProps<{
-  video: Video
+  video: VideoCard
 }>();
 
 const emit = defineEmits<{
@@ -40,7 +40,7 @@ const calcDuration = (seconds: number) => {
       <h3 class="clamp-2 text-2xl text-center">{{video.title}}</h3>
       <div class="flex justify-center gap-2">
         <p>{{video.category}}</p>
-        <p>{{calcDuration(2998)}}</p>
+        <p>{{calcDuration(video.duration)}}</p>
       </div>
 
     </div>
