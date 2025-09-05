@@ -38,3 +38,30 @@ export const getDetail = async (slug: string): Promise<Video> => {
 
   return await useFetchCustom<Video>(`${endpoint}/getVideo?${params.toString()}`, HTTP_METHODS.GET);
 };
+
+export const getRecommendations = async (
+  slug: string,
+  pageIndex: number,
+  pageSize: number
+): Promise<{
+  recommendations: VideoCard[];
+  totalCount: number;
+}> => {
+  const params = new URLSearchParams({
+    slug: slug,
+    pageIndex: pageIndex.toString(),
+    pageSize: pageSize.toString(),
+  });
+
+  const response = await useFetchCustomWithCount<VideoCard[]>(
+    `${endpoint}/recommendations?${params.toString()}`,
+    {
+      method: HTTP_METHODS.GET,
+    }
+  );
+
+  return {
+    recommendations: response.data,
+    totalCount: response.totalCount,
+  };
+};
