@@ -34,15 +34,15 @@ const calcDuration = (seconds: number) => {
 </script>
 
 <template>
-  <div class=" w-full cursor-pointer space-y-5" @click="navigateTo(`/video/${video.slug}`)">
+  <div class=" w-full cursor-pointer space-y-5 rounded-md overflow-hidden border border-red-200" @click="navigateTo(`/video/${video.slug}`)">
     <img :src="`https://localhost:7214/api/video/getthumbnail?slug=${video.slug}`"
-         class="w-full object-cover"
+         class="w-full object-cover "
          :class="size === 's' ? 'h-40' : size === 'm' ? 'h-60' : 'h-80'"
          alt="Image"
          @load="loaded"
     />
-    <div>
-      <h3 class="clamp-2 text-2xl text-center">{{video.title}}</h3>
+    <div class="font-inter px-2">
+      <h3 class="clamp-2 text-2xl text-center font-poppins">{{video.title}}</h3>
       <div class="flex justify-center gap-2">
         <p>{{video.category}}</p>
         <p>{{calcDuration(video.duration)}}</p>
