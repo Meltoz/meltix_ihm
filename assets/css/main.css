@@ -1,2 +1,10 @@
 @import 'tailwindcss';
 @import "@nuxt/ui";
+
+@import "./inter.css";
+@import"./poppins.css";
+
+@theme {
+    --font-inter: inter;
+    --font-poppins: poppins;
+}

@@ -7,6 +7,7 @@ export interface Video {
   slug: string;
   description: string;
   duration: number;
+  tags: string[]
 }
 
 export interface VideoCard {
