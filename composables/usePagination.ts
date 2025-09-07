@@ -4,7 +4,7 @@ export function usePagination() {
   const route = useRoute();
   const router = useRouter();
 
-  // page avec getter/setter
+  // gestion des pages
   const page = computed({
     get: () => Number(route.query.page ?? 0),
     set: (val: number) => {
@@ -17,8 +17,8 @@ export function usePagination() {
     },
   });
 
-  // recherche avec getter/setter
-  const q = computed({
+  // Gestion des query
+  const q = computed<string>({
     get: () => route.query.q ?? '',
     set: (val: string) => {
       const query: Record<string, any> = { ...route.query, q: val || undefined };
@@ -28,7 +28,8 @@ export function usePagination() {
         query.page = 0;
       }
 
-      router.push({ query });
+      console.log('query', query);
+      router.push({ path: '/', query: query });
     },
   });
 
