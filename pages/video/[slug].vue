@@ -20,7 +20,11 @@ useHead(() => ({
       <p class="bg-red-300 rounded-full px-3" @click="navigateTo(`/?q=${video?.category}`)">{{video?.category}}</p>
       <tags-card v-for="tag in video?.tags" :name="tag" />
     </div>
-    <div class="h-[70vh] bg-red-300 flex justify-center items-center">PLAYER</div>
+
+    <video controls class="h-fit max-h-[70vh] bg-black rounded-lg w-full aspect-video" v-if="video">
+      <source :src="`https://localhost:7214/api/video/GetVideo?slug=${video?.slug}`" type="video/mp4" />
+      Votre navigateur ne supporte pas la vidéo HTML5.
+    </video>
     <section class="my-5 space-y-3">
       <h2 class="text-4xl font-poppins">{{video?.title}}</h2>
       <p class="">{{video?.description}}</p>

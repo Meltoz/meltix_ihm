@@ -36,7 +36,7 @@ export const getDetail = async (slug: string): Promise<Video> => {
     slug: slug,
   });
 
-  return await useFetchCustom<Video>(`${endpoint}/getVideo?${params.toString()}`, HTTP_METHODS.GET);
+  return await useFetchCustom<Video>(`${endpoint}/getDetail?${params.toString()}`, HTTP_METHODS.GET);
 };
 
 export const getRecommendations = async (
