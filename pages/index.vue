@@ -31,7 +31,7 @@ onMounted(() => {
 
 <template>
   <div class="">
-    <section class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5 mx-4 xl:mx-10">
+    <section class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5">
       <video-card v-for="video in allVideos?.videos"
                   :video="video"
                   size="l"
