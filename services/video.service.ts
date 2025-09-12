@@ -68,3 +68,20 @@ export const getRecommendations = async (
     totalCount: response.totalCount,
   };
 };
+
+export const updateVideo = async(video:Video):Promise<Video> => {
+  const formData = new FormData();
+  console.log(video);
+
+  // On mappe les propriétés de l'objet Video dans le FormData
+  Object.entries(video).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      formData.append(key, value as any);
+    }
+  });
+
+  return await useFetchCustom<Video>(`${endpoint}/updateVideo`, {
+    method: HTTP_METHODS.PATCH,
+    body: formData,
+  });
+}

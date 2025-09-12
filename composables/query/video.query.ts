@@ -1,6 +1,6 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
-import { getAllVideos, getDetail, getRecommendations } from '~/services/video.service';
-import type { VideoCard } from '~/models/video';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { getAllVideos, getDetail, getRecommendations, updateVideo } from '~/services/video.service';
+import type { Video } from '~/models/video';
 
 export const useAllVideos = (pageIndex: Ref<number>, pageSize: number, search: Ref<string>) => {
   const { data, isPending, isError, error, refetch } = useQuery({
@@ -56,5 +56,23 @@ export const useGetRecommandation = (slug: Ref<string>, pageSize: number) => {
     recommendationsError: query.error,
     recommendationsNextPage: query.fetchNextPage,
     isRecommendationNextPage: query.hasNextPage,
+  };
+};
+
+export const useUpdateVideo = () => {
+  const queryClient = useQueryClient();
+  const { mutate, mutateAsync, isError, error, isPending } = useMutation({
+    mutationFn: (video: Video) => updateVideo(video),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['allVideos'] });
+    },
+  });
+
+  return {
+    updateVideo: mutate,
+    updateVideoAsync: mutateAsync,
+    isUpdateVideoLoading: isPending,
+    isUpdateVideoError: isError,
+    updateVideoError: error
   };
 };

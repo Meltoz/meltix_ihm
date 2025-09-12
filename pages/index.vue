@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import transitionConfig from '~/helpers/transition-config';
+import { useAllVideos } from '~/composables/query/video.query';
 
 definePageMeta({
   pageTransition: transitionConfig,
