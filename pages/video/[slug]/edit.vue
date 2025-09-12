@@ -18,28 +18,34 @@ const { allCategories } = useAllCategories(debouncedSearch);
 const { updateVideoAsync } = useUpdateVideo();
 
 const formDataSchema = z.object({
-  title: z.string().min(6, 'Le titre doit faire plus que 6 caractères').max(50,'Le titre doit faire moins de 50 caractères'),
-  description: z.string({required_error: 'La description est obligatoire'}).min(6, {message:'La description doit contenir 6 caractères minimum'}).max(500),
+  title: z
+    .string()
+    .min(6, 'Le titre doit faire plus que 6 caractères')
+    .max(50, 'Le titre doit faire moins de 50 caractères'),
+  description: z
+    .string({ required_error: 'La description est obligatoire' })
+    .min(6, { message: 'La description doit contenir 6 caractères minimum' })
+    .max(500),
   tags: z.array(z.string()).optional(),
-  categoryName: z.string({required_error: 'La catégorie est obligatoire'}),
+  categoryName: z.string({ required_error: 'La catégorie est obligatoire' }),
 });
 type FormData = z.output<typeof formDataSchema>;
 
 const state = reactive<Partial<FormData>>({
   title: video.value?.title ?? '',
   description: video.value?.description ?? '',
-  categoryName: video?.value?.category  === 'No category' ? undefined : video.value?.category,
+  categoryName: video?.value?.category === 'No category' ? undefined : video.value?.category,
   tags: video.value?.tags ?? [],
 });
 
-async function handleClickSave  (event: FormSubmitEvent<FormData>) {
+async function handleClickSave(event: FormSubmitEvent<FormData>) {
   console.log('handleSaveClick');
   const videoToUpdate = {
     title: state.title,
     id: video.value?.id,
     category: state.categoryName,
     description: state.description,
-    tags: state.tags
+    tags: state.tags,
   } as Video;
 
   console.log(videoToUpdate);
@@ -50,14 +56,17 @@ async function handleClickSave  (event: FormSubmitEvent<FormData>) {
     console.log(error);
   }
 }
+
 function onFormError(event: FormErrorEvent) {
-  console.log('Formulaire invalide ❌', event)
-  }
+  console.log('Formulaire invalide ❌', event);
+}
 </script>
 
 <template>
   <main class="mx-2 xl:mx-16 font-inter">
-    <h2>Edition</h2>
+    <h2 class="font-poppins text-2xl xl:text-4xl xl:my-10 my-2">
+      Édition <i class="italic">"{{ video?.title }}"</i>
+    </h2>
     <section class="flex flex-col xl:flex-row justify-between gap-10">
       <video
         controls
@@ -70,21 +79,21 @@ function onFormError(event: FormErrorEvent) {
         />
         Votre navigateur ne supporte pas la vidéo HTML5.
       </video>
-      <UForm :schema="formDataSchema" :state="state" class="basis-full xl:basis-1/2 space-y-6 grow" @submit="handleClickSave" @error="onFormError">
+      <UForm
+        :schema="formDataSchema"
+        :state="state"
+        class="basis-full xl:basis-1/2 space-y-6 grow"
+        @submit="handleClickSave"
+        @error="onFormError"
+      >
         <fieldset>
           <label class="text-sm">Titre</label>
-          <UInput
-            v-model="state.title"
-            class="font-poppins w-full"
-          />
+          <UInput v-model="state.title" class="font-poppins w-full" size="xl" />
         </fieldset>
         <UFormField label="Description" name="description">
-          <UTextarea
-            v-model="state.description"
-            class="field-sizing-content w-full font-inter"
-            />
+          <UTextarea v-model="state.description" class="field-sizing-content w-full font-inter" />
         </UFormField>
-        <div class="flex flex-col xl:flex-row w-full xl:gap-10 space-y-6 ">
+        <div class="flex flex-col xl:flex-row w-full xl:gap-10 space-y-6">
           <UFormField name="categoryName" label="Catégorie" class="basis-1/4">
             <UInputMenu
               class="w-full"
@@ -96,14 +105,8 @@ function onFormError(event: FormErrorEvent) {
           </UFormField>
           <fieldset class="grow">
             <label class="text-sm">Tags</label>
-            <UInputTags
-              v-model="state.tags"
-              add-on-tab
-              :delimiter="','"
-              class="w-full "
-            />
+            <UInputTags v-model="state.tags" add-on-tab :delimiter="','" class="w-full" />
           </fieldset>
-
         </div>
         <fieldset>
           <UFileUpload
@@ -119,6 +122,5 @@ function onFormError(event: FormErrorEvent) {
         </div>
       </UForm>
     </section>
-    <pre>{{state}}</pre>
   </main>
 </template>
