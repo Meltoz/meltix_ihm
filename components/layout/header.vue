@@ -5,7 +5,7 @@ import Search from '~/components/search.vue';
 
 <template>
   <div class="mx-4 xl:mx-16 my-4 flex justify-between items-center">
-    <h1 class="text-red-600 text-7xl cursor-pointer font-poppins italic font-bold" @click="navigateTo('/')">Meltix</h1>
+    <h1 class="text-blue-300 text-7xl cursor-pointer font-poppins italic font-bold" @click="navigateTo('/')">Meltix</h1>
     <Search />
   </div>
 </template>

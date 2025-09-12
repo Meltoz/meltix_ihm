@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { useDetailVideo } from '~/composables/video.query';
+import { useDetailVideo, useGetRecommandation } from '~/composables/query/video.query';
+import {Pen} from 'lucide-vue-next';
 
 const route = useRoute();
+const config = useRuntimeConfig();
 
 const slug = computed(() => route.params.slug);
 const pageSize = 10;
@@ -12,17 +14,25 @@ const {recommendations,recommendationsNextPage ,isRecommendationNextPage} = useG
 useHead(() => ({
   title: isVideoLoading.value || isVideoError.value ? 'Chargement...' : `Meltix | ${video.value?.title}`,
 }))
+
+const handleClickEdit = () => {
+  navigateTo(`${video.value?.slug}/edit`)
+}
 </script>
 
 <template>
   <main class="mx-2 xl:mx-16 font-inter">
-    <div class="flex gap-2 my-5 italic">
-      <p class="bg-red-300 rounded-full px-3" @click="navigateTo(`/?q=${video?.category}`)">{{video?.category}}</p>
-      <tags-card v-for="tag in video?.tags" :name="tag" />
-    </div>
+    <section class="flex justify-between  my-5">
+      <div class="flex gap-2  italic text-black">
+        <p class="bg-red-300 rounded-full px-3" @click="navigateTo(`/?q=${video?.category}`)">{{video?.category}}</p>
+        <tags-card v-for="tag in video?.tags" :name="tag" />
+      </div>
+      <Pen @click="handleClickEdit" class="cursor-pointer"/>
+    </section>
+
 
     <video controls class="h-fit max-h-[70vh] bg-black rounded-lg w-full aspect-video" v-if="video">
-      <source :src="`https://localhost:7214/api/video/GetVideo?slug=${video?.slug}`" type="video/mp4" />
+      <source :src="`${config.public.apiBaseUrl}/api/video/GetVideo?slug=${video?.slug}`" type="video/mp4" />
       Votre navigateur ne supporte pas la vidéo HTML5.
     </video>
     <section class="my-5 space-y-3">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import type { VideoCard } from '~/models/video';
-
+const config = useRuntimeConfig();
 const props = withDefaults(defineProps<{
   video: VideoCard,
   size?: 's' | 'm' | 'l';
@@ -29,13 +29,12 @@ const calcDuration = (seconds: number) => {
   if (hours === 0 && minutes === 0) result += `${seconds}s`;
 
   return result.trim();
-
 }
 </script>
 
 <template>
   <div class=" w-full cursor-pointer space-y-5 rounded-md overflow-hidden border border-red-200" @click="navigateTo(`/video/${video.slug}`)">
-    <img :src="`https://localhost:7214/api/video/getthumbnail?slug=${video.slug}`"
+    <img :src="`${config.public.apiBaseUrl}/api/video/getthumbnail?slug=${video.slug}`"
          class="w-full object-cover "
          :class="size === 's' ? 'h-40' : size === 'm' ? 'h-60' : 'h-80'"
          alt="Image"
