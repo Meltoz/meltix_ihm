@@ -69,7 +69,7 @@ export const getRecommendations = async (
   };
 };
 
-export const updateVideo = async(video:Video):Promise<Video> => {
+export const updateVideo = async (video: Video): Promise<Video> => {
   const formData = new FormData();
   console.log(video);
 
@@ -84,4 +84,4 @@ export const updateVideo = async(video:Video):Promise<Video> => {
     method: HTTP_METHODS.PATCH,
     body: formData,
   });
-}
+};

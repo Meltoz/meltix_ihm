@@ -73,6 +73,6 @@ export const useUpdateVideo = () => {
     updateVideoAsync: mutateAsync,
     isUpdateVideoLoading: isPending,
     isUpdateVideoError: isError,
-    updateVideoError: error
+    updateVideoError: error,
   };
 };
