@@ -56,7 +56,7 @@ export const useHeader = ()=> {
         {
           label: 'Paramètres',
           icon: 'i-lucide-settings',
-          to: '/admin/params',
+          to: '/admin/parameters',
         }
       ],
     },
