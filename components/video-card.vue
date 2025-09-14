@@ -33,13 +33,16 @@ const calcDuration = (seconds: number) => {
 </script>
 
 <template>
-  <div class=" w-full cursor-pointer space-y-5 rounded-md overflow-hidden border border-red-200" @click="navigateTo(`/video/${video.slug}`)">
-    <img :src="`${config.public.apiBaseUrl}/api/video/getthumbnail?slug=${video.slug}`"
-         class="w-full object-cover "
-         :class="size === 's' ? 'h-40' : size === 'm' ? 'h-60' : 'h-80'"
-         alt="Image"
-         @load="loaded"
-    />
+  <div class=" w-full cursor-pointer space-y-5 rounded-lg overflow-hidden group hover:bg-blue-500/20 transition-colors duration-300" @click="navigateTo(`/video/${video.slug}`)">
+    <div class="overflow-hidden border border-red-200 rounded-lg">
+      <img :src="`${config.public.apiBaseUrl}/api/video/getthumbnail?slug=${video.slug}`"
+           class="w-full object-cover group-hover:scale-110 transition-all duration-300"
+           :class="size === 's' ? 'h-40' : size === 'm' ? 'h-60' : 'h-80'"
+           alt="Image"
+           @load="loaded"
+      />
+    </div>
+
     <div class="font-inter px-2">
       <h3 class="clamp-2 text-2xl text-center font-poppins">{{video.title}}</h3>
       <div class="flex justify-center gap-2">

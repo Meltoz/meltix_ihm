@@ -19,7 +19,7 @@ const { updateVideoAsync } = useUpdateVideo();
 
 const formDataSchema = z.object({
   title: z
-    .string()
+    .string({required_error: 'Le titre est obligatoire'})
     .min(6, 'Le titre doit faire plus que 6 caractères')
     .max(50, 'Le titre doit faire moins de 50 caractères'),
   description: z
@@ -63,7 +63,7 @@ function onFormError(event: FormErrorEvent) {
 </script>
 
 <template>
-  <main class="mx-2 xl:mx-16 font-inter">
+  <main class="mx-2 xl:mx-16 font-inter w-full">
     <h2 class="font-poppins text-2xl xl:text-4xl xl:my-10 my-2">
       Édition <i class="italic">"{{ video?.title }}"</i>
     </h2>
@@ -86,10 +86,10 @@ function onFormError(event: FormErrorEvent) {
         @submit="handleClickSave"
         @error="onFormError"
       >
-        <fieldset>
+        <UFormField name="title">
           <label class="text-sm">Titre</label>
           <UInput v-model="state.title" class="font-poppins w-full" size="xl" />
-        </fieldset>
+        </UFormField>
         <UFormField label="Description" name="description">
           <UTextarea v-model="state.description" class="field-sizing-content w-full font-inter" />
         </UFormField>

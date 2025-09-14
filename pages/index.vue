@@ -30,8 +30,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="">
-    <section class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5">
+  <main class="w-full px-2">
+    <section class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5 w-full">
       <video-card v-for="video in allVideos?.videos"
                   :video="video"
                   size="l"
@@ -42,10 +42,12 @@ onMounted(() => {
       <UPagination
         :default-page="(page || 0) +1"
         :items-per-page="pageSize"
+        color="info"
+        variant="ghost"
         :total="allVideos?.totalCount"
         show-edges
         @update:page="(p) => {page = p-1; loadedCount=0}"
       />
     </div>
-  </div>
+  </main>
 </template>

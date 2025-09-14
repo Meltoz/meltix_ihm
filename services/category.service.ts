@@ -20,3 +20,19 @@ export const getAllCategories = async (
     totalCount: response.totalCount,
   };
 };
+
+export const addCategory = async(category: Category): Promise<Category> => {
+
+  return await useFetchCustom<Category>(`${endpoint}/storecategory`,{
+    method: HTTP_METHODS.POST,
+    body: JSON.stringify(category),
+    }
+  );
+}
+
+export const updateCategory = async(category: Category): Promise<Category> => {
+  return await useFetchCustom<Category>(`${endpoint}/updateCategory`, {
+    method: HTTP_METHODS.PATCH,
+    body: JSON.stringify(category),
+  })
+}
