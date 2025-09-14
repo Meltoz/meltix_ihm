@@ -19,11 +19,11 @@ export const useAllCategories = (search: Ref<string>) => {
 export const useAddCategory = () => {
   const queryClient = useQueryClient();
 
-  const {mutateAsync, isError, error, isPending} = useMutation({
-    mutationFn: (category:Category) => addCategory(category),
+  const { mutateAsync, isError, error, isPending } = useMutation({
+    mutationFn: (category: Category) => addCategory(category),
     onSuccess: async () => {
-      queryClient.invalidateQueries({queryKey: ['categories']})
-    }
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
   });
 
   return {
@@ -31,17 +31,17 @@ export const useAddCategory = () => {
     isAddCategoryError: isError,
     addCategoryError: error,
     isAddCategoryLoading: isPending,
-  }
-}
+  };
+};
 
 export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
-  const {mutateAsync, isError, error, isPending} = useMutation({
-    mutationFn: (category:Category) => updateCategory(category),
+  const { mutateAsync, isError, error, isPending } = useMutation({
+    mutationFn: (category: Category) => updateCategory(category),
     onSuccess: async () => {
-      queryClient.invalidateQueries({queryKey: ['categories']})
-    }
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
   });
 
   return {
@@ -49,5 +49,5 @@ export const useUpdateCategory = () => {
     isUpdateCategoryError: isError,
     updateCategoryError: error,
     isUpdateCategoryLoading: isPending,
-  }
-}
+  };
+};
