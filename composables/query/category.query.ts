@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { addCategory, getAllCategories, updateCategory } from '~/services/category.service';
+import {
+  addCategory,
+  deleteCategory,
+  getAllCategories,
+  updateCategory,
+} from '~/services/category.service';
 import type { Category } from '~/models/category';
 
 export const useAllCategories = (search: Ref<string>) => {
@@ -49,5 +54,22 @@ export const useUpdateCategory = () => {
     isUpdateCategoryError: isError,
     updateCategoryError: error,
     isUpdateCategoryLoading: isPending,
+  };
+};
+
+export const useDeleteCategory = () => {
+  const queryClient = useQueryClient();
+  const { mutateAsync, isError, error, isPending } = useMutation({
+    mutationFn: (id: string) => deleteCategory(id),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
+  });
+
+  return {
+    deleteCategoryAsync: mutateAsync,
+    isDeleteCategoryError: isError,
+    isDeleteCategoryLoading: isPending,
+    deleteCategoryError: error,
   };
 };

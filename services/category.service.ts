@@ -34,3 +34,12 @@ export const updateCategory = async (category: Category): Promise<Category> => {
     body: JSON.stringify(category),
   });
 };
+
+export const deleteCategory = async (id: string): Promise<void> => {
+  const params = new URLSearchParams({
+    id,
+  });
+  return await useFetchCustom<void>(`${endpoint}/deleteCategory?${params.toString()}`, {
+    method: HTTP_METHODS.DELETE,
+  });
+};

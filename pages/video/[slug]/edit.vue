@@ -39,7 +39,6 @@ const state = reactive<Partial<FormData>>({
 });
 
 async function handleClickSave(event: FormSubmitEvent<FormData>) {
-  console.log('handleSaveClick');
   const videoToUpdate = {
     title: state.title,
     id: video.value?.id,
