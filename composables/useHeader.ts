@@ -1,14 +1,15 @@
 import { useAllCategories } from '~/composables/query/category.query';
 
-export const useHeader = ()=> {
-  const { allCategories, isAllCategoriesLoading, isAllCategoriesError } = useAllCategories(ref(""))
+export const useHeader = () => {
+  const { allCategories, isAllCategoriesLoading, isAllCategoriesError } = useAllCategories(ref(''));
 
-  const categoryChildren = computed(() =>
-    allCategories.value?.categories?.map(cat => ({
-      label: cat.name,
-      to: `/?q=${encodeURIComponent(cat.name)}`,
-    })) || []
-  )
+  const categoryChildren = computed(
+    () =>
+      allCategories.value?.categories?.map((cat) => ({
+        label: cat.name,
+        to: `/?q=${encodeURIComponent(cat.name)}`,
+      })) || []
+  );
 
   const desktopLinks = computed(() => [
     {
@@ -57,7 +58,7 @@ export const useHeader = ()=> {
           label: 'Paramètres',
           icon: 'i-lucide-settings',
           to: '/admin/parameters',
-        }
+        },
       ],
     },
     {
@@ -120,6 +121,6 @@ export const useHeader = ()=> {
 
   return {
     desktopLinks,
-    mobileLinks
+    mobileLinks,
   };
-}
+};

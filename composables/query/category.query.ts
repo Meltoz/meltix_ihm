@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { addCategory, deleteCategory, getAllCategories, updateCategory } from '~/services/category.service';
+import {
+  addCategory,
+  deleteCategory,
+  getAllCategories,
+  updateCategory,
+} from '~/services/category.service';
 import type { Category } from '~/models/category';
 
 export const useAllCategories = (search: Ref<string>) => {
@@ -19,11 +24,11 @@ export const useAllCategories = (search: Ref<string>) => {
 export const useAddCategory = () => {
   const queryClient = useQueryClient();
 
-  const {mutateAsync, isError, error, isPending} = useMutation({
-    mutationFn: (category:Category) => addCategory(category),
+  const { mutateAsync, isError, error, isPending } = useMutation({
+    mutationFn: (category: Category) => addCategory(category),
     onSuccess: async () => {
-      queryClient.invalidateQueries({queryKey: ['categories']})
-    }
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
   });
 
   return {
@@ -31,17 +36,17 @@ export const useAddCategory = () => {
     isAddCategoryError: isError,
     addCategoryError: error,
     isAddCategoryLoading: isPending,
-  }
-}
+  };
+};
 
 export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
-  const {mutateAsync, isError, error, isPending} = useMutation({
-    mutationFn: (category:Category) => updateCategory(category),
+  const { mutateAsync, isError, error, isPending } = useMutation({
+    mutationFn: (category: Category) => updateCategory(category),
     onSuccess: async () => {
-      queryClient.invalidateQueries({queryKey: ['categories']})
-    }
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
   });
 
   return {
@@ -49,16 +54,16 @@ export const useUpdateCategory = () => {
     isUpdateCategoryError: isError,
     updateCategoryError: error,
     isUpdateCategoryLoading: isPending,
-  }
-}
+  };
+};
 
 export const useDeleteCategory = () => {
   const queryClient = useQueryClient();
-  const {mutateAsync, isError, error, isPending} = useMutation({
+  const { mutateAsync, isError, error, isPending } = useMutation({
     mutationFn: (id: string) => deleteCategory(id),
     onSuccess: async () => {
-      queryClient.invalidateQueries({queryKey: ['categories']})
-    }
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
   });
 
   return {
@@ -66,5 +71,5 @@ export const useDeleteCategory = () => {
     isDeleteCategoryError: isError,
     isDeleteCategoryLoading: isPending,
     deleteCategoryError: error,
-  }
-}
+  };
+};
