@@ -34,6 +34,7 @@ export const updateCategory = async (category: Category): Promise<Category> => {
     body: JSON.stringify(category),
   });
 };
+
 export const deleteCategory = async (id: string): Promise<void> => {
   const params = new URLSearchParams({
     id,
