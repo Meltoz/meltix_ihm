@@ -76,7 +76,6 @@ const handleDeleteCategoryClick = async (event?: Category) => {
         v-for="category in allCategories?.categories"
         :key="category.id"
         class="flex justify-center items-center border py-6 relative rounded-lg group"
-        @click="handleCreateCategoryClick(category)"
       >
         <div class="absolute top-2 right-2 md:invisible group-hover:visible flex flex-col gap-3">
           <button class="cursor-pointer" @click.stop="handleCreateCategoryClick(category)"><Pencil class="size-5"/></button>

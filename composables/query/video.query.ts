@@ -1,10 +1,16 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { getAllVideos, getDetail, getRecommendations, updateVideo } from '~/services/video.service';
-import type { Video } from '~/models/video';
+import {
+  getAllVideos,
+  getDetail,
+  getRecommendations,
+  getUncategorisedVideos,
+  updateVideo,
+} from '~/services/video.service';
+import type { Video, VideoCard } from '~/models/video';
 
 export const useAllVideos = (pageIndex: Ref<number>, pageSize: number, search: Ref<string>) => {
   const { data, isPending, isError, error, refetch } = useQuery({
-    queryKey: ['allVideos', pageIndex, search],
+    queryKey: ['allVideos', pageIndex, search] as const,
     queryFn: () => getAllVideos(unref(pageIndex), pageSize, unref(search)),
     placeholderData: (prev) => prev,
   });
@@ -19,7 +25,7 @@ export const useAllVideos = (pageIndex: Ref<number>, pageSize: number, search: R
 };
 
 export const useDetailVideo = (slug: Ref<string>) => {
-  const { data, isPending, isError, error } = useQuery({
+  const { data, isPending, isError, error, isSuccess } = useQuery({
     queryKey: ['video', slug],
     queryFn: () => getDetail(unref(slug)),
   });
@@ -29,11 +35,12 @@ export const useDetailVideo = (slug: Ref<string>) => {
     isVideoLoading: isPending,
     isVideoError: isError,
     videoError: error,
+    isVideoSuccess: isSuccess
   };
 };
 
 export const useGetRecommandation = (slug: Ref<string>, pageSize: number) => {
-  const query = useInfiniteQuery({
+  const query = useInfiniteQuery<VideoCard[]>({
     queryKey: ['recommendations', slug],
     queryFn: ({ pageParam = 0 }) => getRecommendations(unref(slug), pageParam, pageSize),
     getNextPageParam: (lastPage, allPages) => {
@@ -76,3 +83,20 @@ export const useUpdateVideo = () => {
     updateVideoError: error,
   };
 };
+
+export const useUncategorisedVideos = (pageIndex: Ref<number>, pageSize: number, search: Ref<string>) => {
+  const {data, isPending, isError, error} = useQuery({
+    queryKey: ['allUncategorisedVideos', pageIndex, pageSize, search] as const,
+    queryFn: () => getUncategorisedVideos(unref(pageIndex), pageSize, unref(search)),
+    placeholderData: (prev) => prev,
+  });
+
+  return {
+    uncategorisedVideos: data,
+    isUncategorisedVideoLoading: isPending,
+    isUncategorisedVideoError: isError,
+    recommendationsError: error,
+  }
+
+
+}

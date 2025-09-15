@@ -5,8 +5,10 @@ const config = useRuntimeConfig();
 const props = withDefaults(defineProps<{
   video: VideoCard,
   size?: 's' | 'm' | 'l';
+  edit?: boolean
 }>(), {
-  size: 'm'
+  size: 'm',
+  edit: false,
 });
 
 const emit = defineEmits<{
@@ -33,7 +35,7 @@ const calcDuration = (seconds: number) => {
 </script>
 
 <template>
-  <div class=" w-full cursor-pointer space-y-5 rounded-lg overflow-hidden group hover:bg-blue-500/20 transition-colors duration-300" @click="navigateTo(`/video/${video.slug}`)">
+  <div class=" w-full cursor-pointer space-y-5 rounded-lg overflow-hidden group hover:bg-blue-500/20 transition-colors duration-300" @click="navigateTo(`/video/${video.slug}${edit ? '/edit': ''}`)">
     <div class="overflow-hidden border border-red-200 rounded-lg">
       <img :src="`${config.public.apiBaseUrl}/api/video/getthumbnail?slug=${video.slug}`"
            class="w-full object-cover group-hover:scale-110 transition-all duration-300"

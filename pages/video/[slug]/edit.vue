@@ -9,7 +9,7 @@ import type { FormErrorEvent, FormSubmitEvent } from '#ui/types';
 const route = useRoute();
 const config = useRuntimeConfig();
 const slug = computed(() => route.params.slug);
-const { video } = useDetailVideo(slug);
+const { video, isVideoSuccess } = useDetailVideo(slug);
 
 const categoriesSearched = ref<string>('');
 const debouncedSearch = useDebounce(categoriesSearched, 400);
@@ -32,11 +32,12 @@ const formDataSchema = z.object({
 type FormData = z.output<typeof formDataSchema>;
 
 const state = reactive<Partial<FormData>>({
-  title: video.value?.title ?? '',
-  description: video.value?.description ?? '',
+  title: '',
+  description: '',
   categoryName: video?.value?.category === 'No category' ? undefined : video.value?.category,
-  tags: video.value?.tags ?? [],
+  tags: [],
 });
+
 
 async function handleClickSave(event: FormSubmitEvent<FormData>) {
   const videoToUpdate = {
@@ -59,6 +60,16 @@ async function handleClickSave(event: FormSubmitEvent<FormData>) {
 function onFormError(event: FormErrorEvent) {
   console.log('Formulaire invalide ❌', event);
 }
+
+watch(video, (newVideo) => {
+  if (newVideo) {
+    state.title = newVideo.title;
+    state.description = newVideo.description;
+    state.categoryName =
+      newVideo.category === 'No category' ? undefined : newVideo.category;
+    state.tags = newVideo.tags ?? [];
+  }
+},{immediate: true});
 </script>
 
 <template>
