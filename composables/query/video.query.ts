@@ -35,7 +35,7 @@ export const useDetailVideo = (slug: Ref<string>) => {
     isVideoLoading: isPending,
     isVideoError: isError,
     videoError: error,
-    isVideoSuccess: isSuccess
+    isVideoSuccess: isSuccess,
   };
 };
 
@@ -84,8 +84,12 @@ export const useUpdateVideo = () => {
   };
 };
 
-export const useUncategorisedVideos = (pageIndex: Ref<number>, pageSize: number, search: Ref<string>) => {
-  const {data, isPending, isError, error} = useQuery({
+export const useUncategorisedVideos = (
+  pageIndex: Ref<number>,
+  pageSize: number,
+  search: Ref<string>
+) => {
+  const { data, isPending, isError, error } = useQuery({
     queryKey: ['allUncategorisedVideos', pageIndex, pageSize, search] as const,
     queryFn: () => getUncategorisedVideos(unref(pageIndex), pageSize, unref(search)),
     placeholderData: (prev) => prev,
@@ -96,7 +100,5 @@ export const useUncategorisedVideos = (pageIndex: Ref<number>, pageSize: number,
     isUncategorisedVideoLoading: isPending,
     isUncategorisedVideoError: isError,
     recommendationsError: error,
-  }
-
-
-}
+  };
+};

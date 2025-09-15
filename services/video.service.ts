@@ -86,21 +86,28 @@ export const updateVideo = async (video: Video): Promise<Video> => {
   });
 };
 
-export const getUncategorisedVideos = async(pageIndex: number, pageSize: number, search: string): Promise<{videos: Video[], totalCount: number}> => {
+export const getUncategorisedVideos = async (
+  pageIndex: number,
+  pageSize: number,
+  search: string
+): Promise<{ videos: Video[]; totalCount: number }> => {
   const params = new URLSearchParams({
     pageIndex: pageIndex.toString(),
     pageSize: pageSize.toString(),
-  })
-  if(search !== '') {
+  });
+  if (search !== '') {
     params.append('search', search);
   }
 
-  const response =  await useFetchCustomWithCount<Video[]>(`${endpoint}/GetUnCategorisedVideos?${params.toString()}`,{
-    method: HTTP_METHODS.GET,
-  });
+  const response = await useFetchCustomWithCount<Video[]>(
+    `${endpoint}/GetUnCategorisedVideos?${params.toString()}`,
+    {
+      method: HTTP_METHODS.GET,
+    }
+  );
 
   return {
     videos: response.data,
-    totalCount: response.totalCount
+    totalCount: response.totalCount,
   };
-}
+};
