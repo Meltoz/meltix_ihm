@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import { useUncategorisedVideos } from '~/composables/query/video.query';
+import { requestScanVideo } from '~/services/video.service';
 
 const page = ref(0);
 const pageSize = 20;
@@ -8,12 +9,16 @@ const search = ref<string>('');
 
 const {uncategorisedVideos, isUncategorisedVideoLoading} = useUncategorisedVideos(page, pageSize, search);
 
+const handleScanClick = async () => {
+  await requestScanVideo();
+}
+
 </script>
 <template>
   <main class="mx-2 w-full">
     <div class="mb-5 flex flex-col md:flex-row items-start md:justify-between items-center space-y-3">
       <h2 class="text-3xl font-medium">Vidéo non catégorisés ({{uncategorisedVideos?.totalCount}} videos)</h2>
-      <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20" />
+      <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20" @click="handleScanClick" />
     </div>
 
     <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5">
