@@ -112,9 +112,8 @@ export const getUncategorisedVideos = async (
   };
 };
 
-
 export const requestScanVideo = async (): Promise<void> => {
-   return await useFetchCustom(`${endpoint}/Scan`,{
+  return await useFetchCustom(`${endpoint}/Scan`, {
     method: HTTP_METHODS.GET,
   });
-}
+};
