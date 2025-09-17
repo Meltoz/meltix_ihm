@@ -18,7 +18,7 @@ export function usePagination() {
   });
 
   // Gestion des query
-  const q = computed<string>({
+  const q = computed({
     get: () => route.query.q ?? '',
     set: (val: string) => {
       const query: Record<string, any> = { ...route.query, q: val || undefined };
