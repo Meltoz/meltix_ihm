@@ -3,11 +3,11 @@
 import { useUncategorisedVideos } from '~/composables/query/video.query';
 import { requestScanVideo } from '~/services/video.service';
 
-const page = ref(0);
+const {q, page} = usePagination();
 const pageSize = 20;
-const search = ref<string>('');
 
-const {uncategorisedVideos, isUncategorisedVideoLoading} = useUncategorisedVideos(page, pageSize, search);
+
+const {uncategorisedVideos, isUncategorisedVideoLoading} = useUncategorisedVideos(page, pageSize, q);
 
 const handleScanClick = async () => {
   await requestScanVideo();
