@@ -28,8 +28,7 @@ export function usePagination() {
         query.page = 0;
       }
 
-      console.log('query', query);
-      router.push({ path: '/', query: query });
+      router.push({ query: query });
     },
   });
 

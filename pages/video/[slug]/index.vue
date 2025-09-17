@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDetailVideo, useGetRecommandation } from '~/composables/query/video.query';
 import {Pen} from 'lucide-vue-next';
+import type { Video } from '~/models/video';
 
 const route = useRoute();
 const config = useRuntimeConfig();
@@ -31,10 +32,9 @@ const handleClickEdit = () => {
     </section>
 
 
-    <video controls class="h-fit max-h-[70vh] bg-black rounded-lg w-full aspect-video" v-if="video">
-      <source :src="`${config.public.apiBaseUrl}/api/video/GetVideo?slug=${video?.slug}`" type="video/mp4" />
-      Votre navigateur ne supporte pas la vidéo HTML5.
-    </video>
+    <div v-if="video">
+     <video-player :slug="video.slug" />
+    </div>
     <section class="my-5 space-y-3">
       <h2 class="text-4xl font-poppins">{{video?.title}}</h2>
       <p class="">{{video?.description}}</p>
