@@ -112,24 +112,29 @@ export const getUncategorisedVideos = async (
   };
 };
 
-export const getLatest = async(pageIndex: number, pageSize: number): Promise<{videos: VideoCard[], totalCount: number}> => {
+export const getLatest = async (
+  pageIndex: number,
+  pageSize: number
+): Promise<{ videos: VideoCard[]; totalCount: number }> => {
   const days = 7;
   const params = new URLSearchParams({
     pageIndex: pageIndex.toString(),
     pageSize: pageSize.toString(),
     days: days.toString(),
-    });
-
-  const response =  await useFetchCustomWithCount<VideoCard[]>(`${endpoint}/LatestVideos?${params.toString()}`, {
-    method: HTTP_METHODS.GET,
   });
+
+  const response = await useFetchCustomWithCount<VideoCard[]>(
+    `${endpoint}/LatestVideos?${params.toString()}`,
+    {
+      method: HTTP_METHODS.GET,
+    }
+  );
 
   return {
     videos: response.data,
-    totalCount: response.totalCount
-  }
-
-}
+    totalCount: response.totalCount,
+  };
+};
 
 export const requestScanVideo = async (): Promise<void> => {
   return await useFetchCustom(`${endpoint}/Scan`, {

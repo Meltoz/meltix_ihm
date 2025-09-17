@@ -1,4 +1,10 @@
-import { type InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import {
+  type InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/vue-query';
 import { computed, unref, type Ref } from 'vue';
 import {
   getAllVideos,
@@ -13,9 +19,12 @@ import type { Video, VideoCard } from '~/models/video';
 // Keys
 export const VIDEO_QUERY_KEYS = {
   all: ['videos'] as const,
-  allVideos: (pageIndex?: number, search?: string) => [...VIDEO_QUERY_KEYS.all, 'all', pageIndex, search] as const,
-  latestVideos: (pageIndex?: number, pageSize?: number) => [...VIDEO_QUERY_KEYS.all, 'latest', pageIndex, pageSize] as const,
-  uncategorised: (pageIndex?: number, pageSize?: number, search?: string) => [...VIDEO_QUERY_KEYS.all, 'uncategorised', pageIndex, pageSize, search] as const,
+  allVideos: (pageIndex?: number, search?: string) =>
+    [...VIDEO_QUERY_KEYS.all, 'all', pageIndex, search] as const,
+  latestVideos: (pageIndex?: number, pageSize?: number) =>
+    [...VIDEO_QUERY_KEYS.all, 'latest', pageIndex, pageSize] as const,
+  uncategorised: (pageIndex?: number, pageSize?: number, search?: string) =>
+    [...VIDEO_QUERY_KEYS.all, 'uncategorised', pageIndex, pageSize, search] as const,
   detail: (slug: string) => [...VIDEO_QUERY_KEYS.all, 'detail', slug] as const,
   recommendations: (slug: string) => [...VIDEO_QUERY_KEYS.all, 'recommendations', slug] as const,
 } as const;
@@ -69,7 +78,13 @@ interface RecommendationsResponse {
 }
 
 export const useGetRecommendation = (slug: Ref<string>, pageSize: number) => {
-  const query = useInfiniteQuery<RecommendationsResponse, Error, InfiniteData<RecommendationsResponse>, readonly unknown[], number>({
+  const query = useInfiniteQuery<
+    RecommendationsResponse,
+    Error,
+    InfiniteData<RecommendationsResponse>,
+    readonly unknown[],
+    number
+  >({
     queryKey: computed(() => VIDEO_QUERY_KEYS.recommendations(unref(slug))),
     queryFn: ({ pageParam = 0 }) => getRecommendations(unref(slug), pageParam, pageSize),
     getNextPageParam: (lastPage, allPages) => {
@@ -106,16 +121,16 @@ export const useUpdateVideo = () => {
       // Invalidation
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: VIDEO_QUERY_KEYS.allVideos()
+          queryKey: VIDEO_QUERY_KEYS.allVideos(),
         }),
         queryClient.invalidateQueries({
-          queryKey: VIDEO_QUERY_KEYS.latestVideos()
+          queryKey: VIDEO_QUERY_KEYS.latestVideos(),
         }),
         queryClient.invalidateQueries({
-          queryKey: VIDEO_QUERY_KEYS.uncategorised()
+          queryKey: VIDEO_QUERY_KEYS.uncategorised(),
         }),
         queryClient.invalidateQueries({
-          queryKey: VIDEO_QUERY_KEYS.detail(video.slug)
+          queryKey: VIDEO_QUERY_KEYS.detail(video.slug),
         }),
       ]);
     },
@@ -140,7 +155,9 @@ export const useUncategorisedVideos = (
   search: Ref<string>
 ) => {
   const query = useQuery({
-    queryKey: computed(() => VIDEO_QUERY_KEYS.uncategorised(unref(pageIndex), pageSize, unref(search))),
+    queryKey: computed(() =>
+      VIDEO_QUERY_KEYS.uncategorised(unref(pageIndex), pageSize, unref(search))
+    ),
     queryFn: () => getUncategorisedVideos(unref(pageIndex), pageSize, unref(search)),
     placeholderData: (prev) => prev,
     ...DEFAULT_CONFIG,
