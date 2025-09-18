@@ -7,69 +7,103 @@ import {
 } from '~/services/category.service';
 import type { Category } from '~/models/category';
 
-export const useAllCategories = (search: Ref<string>) => {
-  const { data, isPending, isError, error } = useQuery({
-    queryKey: ['categories', search],
-    queryFn: () => getAllCategories(unref(search)),
-  });
+
+export const CATEGORY_QUERY_KEYS = {
+  category: ['category'] as const,
+  all: (search?: string) =>
+    [...CATEGORY_QUERY_KEYS.category, 'all', search] as const
+} as const;
+
+export const useAllCategories = (search: MaybeRef<string>) => {
+  const searchRef = toRef(search);
+
+  const query = useQuery({
+    queryKey: computed(() => CATEGORY_QUERY_KEYS.all(searchRef.value)),
+    queryFn: () => getAllCategories(searchRef.value),
+    placeholderData: (prev) => prev,
+  })
 
   return {
-    allCategories: data,
-    isAllCategoriesLoading: isPending,
-    isAllCategoriesError: isError,
-    allCategoriesError: error,
+    allCategories: query.data,
+    isAllCategoriesLoading: query.isPending,
+    isAllCategoriesError: query.isError,
+    allCategoriesError: query.error,
+    isAllCategoriesSuccess: query.isSuccess,
   };
 };
 
 export const useAddCategory = () => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isError, error, isPending } = useMutation({
+  const query = useMutation({
     mutationFn: (category: Category) => addCategory(category),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: CATEGORY_QUERY_KEYS.all(),
+        })
+      ])
     },
+    onError: error => {
+      console.log('Error when adding category: ', error);
+    }
   });
 
   return {
-    addCategoryAsync: mutateAsync,
-    isAddCategoryError: isError,
-    addCategoryError: error,
-    isAddCategoryLoading: isPending,
+    addCategoryAsync: query.mutateAsync,
+    isAddCategoryError: query.isError,
+    addCategoryError: query.error,
+    isAddCategoryLoading: query.isPending,
+    isAddCategorySuccess: query.isSuccess
   };
 };
 
 export const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isError, error, isPending } = useMutation({
+  const query = useMutation({
     mutationFn: (category: Category) => updateCategory(category),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: CATEGORY_QUERY_KEYS.all() }),
+      ])
     },
+    onError: error => {
+      console.log('Error when updating category: ', error);
+    }
   });
 
   return {
-    updateCategoryAsync: mutateAsync,
-    isUpdateCategoryError: isError,
-    updateCategoryError: error,
-    isUpdateCategoryLoading: isPending,
+    updateCategoryAsync: query.mutateAsync,
+    isUpdateCategoryError: query.isError,
+    isUpdateCategorySuccess: query.isSuccess,
+    isUpdateCategoryLoading: query.isPending,
+    updateCategoryError: query.error,
+
   };
 };
 
 export const useDeleteCategory = () => {
   const queryClient = useQueryClient();
-  const { mutateAsync, isError, error, isPending } = useMutation({
+  const query = useMutation({
     mutationFn: (id: string) => deleteCategory(id),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: CATEGORY_QUERY_KEYS.all()
+        }),
+      ])
     },
+    onError: error => {
+      console.log('Error when deleting category: ', error);
+    }
   });
 
   return {
-    deleteCategoryAsync: mutateAsync,
-    isDeleteCategoryError: isError,
-    isDeleteCategoryLoading: isPending,
-    deleteCategoryError: error,
+    deleteCategoryAsync: query.mutateAsync,
+    isDeleteCategorySuccess: query.isSuccess,
+    isDeleteCategoryLoading: query.isPending,
+    isDeleteCategoryError: query.isError,
+    deleteCategoryError: query.error,
   };
 };
