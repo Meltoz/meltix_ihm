@@ -7,11 +7,9 @@ import {
 } from '~/services/category.service';
 import type { Category } from '~/models/category';
 
-
 export const CATEGORY_QUERY_KEYS = {
   category: ['category'] as const,
-  all: (search?: string) =>
-    [...CATEGORY_QUERY_KEYS.category, 'all', search] as const
+  all: (search?: string) => [...CATEGORY_QUERY_KEYS.category, 'all', search] as const,
 } as const;
 
 export const useAllCategories = (search: MaybeRef<string>) => {
@@ -21,7 +19,7 @@ export const useAllCategories = (search: MaybeRef<string>) => {
     queryKey: computed(() => CATEGORY_QUERY_KEYS.all(searchRef.value)),
     queryFn: () => getAllCategories(searchRef.value),
     placeholderData: (prev) => prev,
-  })
+  });
 
   return {
     allCategories: query.data,
@@ -41,12 +39,12 @@ export const useAddCategory = () => {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: CATEGORY_QUERY_KEYS.all(),
-        })
-      ])
+        }),
+      ]);
     },
-    onError: error => {
+    onError: (error) => {
       console.log('Error when adding category: ', error);
-    }
+    },
   });
 
   return {
@@ -54,7 +52,7 @@ export const useAddCategory = () => {
     isAddCategoryError: query.isError,
     addCategoryError: query.error,
     isAddCategoryLoading: query.isPending,
-    isAddCategorySuccess: query.isSuccess
+    isAddCategorySuccess: query.isSuccess,
   };
 };
 
@@ -64,13 +62,11 @@ export const useUpdateCategory = () => {
   const query = useMutation({
     mutationFn: (category: Category) => updateCategory(category),
     onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: CATEGORY_QUERY_KEYS.all() }),
-      ])
+      await Promise.all([queryClient.invalidateQueries({ queryKey: CATEGORY_QUERY_KEYS.all() })]);
     },
-    onError: error => {
+    onError: (error) => {
       console.log('Error when updating category: ', error);
-    }
+    },
   });
 
   return {
@@ -79,7 +75,6 @@ export const useUpdateCategory = () => {
     isUpdateCategorySuccess: query.isSuccess,
     isUpdateCategoryLoading: query.isPending,
     updateCategoryError: query.error,
-
   };
 };
 
@@ -90,13 +85,13 @@ export const useDeleteCategory = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: CATEGORY_QUERY_KEYS.all()
+          queryKey: CATEGORY_QUERY_KEYS.all(),
         }),
-      ])
+      ]);
     },
-    onError: error => {
+    onError: (error) => {
       console.log('Error when deleting category: ', error);
-    }
+    },
   });
 
   return {
