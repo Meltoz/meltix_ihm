@@ -6,13 +6,14 @@ import Error from '~/components/layout/Error.vue';
 
 definePageMeta({
   pageTransition: transitionConfig,
+  searchPagination: true
 });
 
 useHead({
   title: 'Meltix',
 });
 
-const {page, q} = usePagination();
+const {currentPage, searchQuery} = useSearchPagination();
 const pageSize = 4*5;
 const {startLoading, stopLoading} = useLoading()
 
@@ -20,7 +21,7 @@ const loadedCount = ref(0)
 const totalImages = computed(() => allVideos.value?.videos?.length || 0)
 const allLoaded = computed(() => totalImages.value > 0 && loadedCount.value >= totalImages.value)
 
-const {allVideos, isAllVideosLoading, isAllVideosSuccess, isAllVideosError} = useAllVideos(page, pageSize, q);
+const {allVideos, isAllVideosLoading, isAllVideosSuccess, isAllVideosError} = useAllVideos(currentPage, pageSize, searchQuery);
 
 const onImageVideoLoad = () =>{
   loadedCount.value++;
@@ -47,13 +48,13 @@ watchEffect(() => {
       </section>
       <div class="flex justify-center my-10">
         <UPagination
-          :default-page="(page || 0) +1"
+          :default-page="(currentPage || 0) +1"
           :items-per-page="pageSize"
           color="info"
           variant="ghost"
           :total="allVideos.totalCount"
           show-edges
-          @update:page="(p) => {page = p-1; loadedCount=0}"
+          @update:page="(p) => {currentPage = p-1; loadedCount=0}"
         />
       </div>
     </div>
