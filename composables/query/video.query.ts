@@ -18,15 +18,15 @@ import type { Video, VideoCard } from '~/models/video';
 
 // Keys
 export const VIDEO_QUERY_KEYS = {
-  all: ['videos'] as const,
+  videos: ['videos'] as const,
   allVideos: (pageIndex?: number, search?: string) =>
-    [...VIDEO_QUERY_KEYS.all, 'all', pageIndex, search] as const,
+    [...VIDEO_QUERY_KEYS.videos, 'all', pageIndex, search] as const,
   latestVideos: (pageIndex?: number, pageSize?: number) =>
-    [...VIDEO_QUERY_KEYS.all, 'latest', pageIndex, pageSize] as const,
+    [...VIDEO_QUERY_KEYS.videos, 'latest', pageIndex, pageSize] as const,
   uncategorised: (pageIndex?: number, pageSize?: number, search?: string) =>
-    [...VIDEO_QUERY_KEYS.all, 'uncategorised', pageIndex, pageSize, search] as const,
-  detail: (slug: string) => [...VIDEO_QUERY_KEYS.all, 'detail', slug] as const,
-  recommendations: (slug: string) => [...VIDEO_QUERY_KEYS.all, 'recommendations', slug] as const,
+    [...VIDEO_QUERY_KEYS.videos, 'uncategorised', pageIndex, pageSize, search] as const,
+  detail: (slug: string) => [...VIDEO_QUERY_KEYS.videos, 'detail', slug] as const,
+  recommendations: (slug: string) => [...VIDEO_QUERY_KEYS.videos, 'recommendations', slug] as const,
 } as const;
 
 // Configuration par défaut

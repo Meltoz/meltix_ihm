@@ -2,16 +2,26 @@
 
 import { useUncategorisedVideos } from '~/composables/query/video.query';
 import { requestScanVideo } from '~/services/video.service';
+import { definePageMeta } from '#imports';
 
-const {q, page} = usePagination();
+definePageMeta({
+  searchPagination: true
+})
+
+const {currentPage, searchQuery, goToPage} = useSearchPagination();
 const pageSize = 20;
 
+const {stopLoading, startLoading} = useLoading();
 
-const {uncategorisedVideos, isUncategorisedVideoLoading} = useUncategorisedVideos(page, pageSize, q);
+const {uncategorisedVideos, isUncategorisedVideoLoading} = useUncategorisedVideos(currentPage, pageSize, searchQuery);
 
 const handleScanClick = async () => {
   await requestScanVideo();
 }
+watch(isUncategorisedVideoLoading, (val) => {
+  if(val) startLoading();
+  else stopLoading();
+}, {immediate: true})
 
 </script>
 <template>
@@ -26,13 +36,14 @@ const handleScanClick = async () => {
     </section>
     <div v-if="uncategorisedVideos?.totalCount > pageSize" class="flex justify-center my-8">
       <UPagination
-        :default-page="(page || 0) +1"
+        :default-page="(currentPage) +1"
         :items-per-page="pageSize"
+        :page="currentPage+1"
         color="info"
         variant="ghost"
         :total="uncategorisedVideos?.totalCount"
         show-edges
-        @update:page="(p) => page = p-1" />
+        @update:page="(p) => goToPage(p-1)" />
     </div>
   </main>
 </template>
