@@ -10,18 +10,22 @@ export const TAGS_QUERY_KEYS = {
 const DEFAULT_CONFIG = {
   staleTime: 5 * 60 * 1000,
   gcTime: 10 * 60 * 1000,
-  retry: 1
+  retry: 1,
 } as const;
 
-export const useAllTags = (pageIndex: MaybeRef<number>, pageSize: number, search: MaybeRef<string>) => {
+export const useAllTags = (
+  pageIndex: MaybeRef<number>,
+  pageSize: number,
+  search: MaybeRef<string>
+) => {
   const pageIndexRef = toRef(pageIndex);
   const searchRef = toRef(search);
 
   const query = useQuery({
     queryKey: computed(() => TAGS_QUERY_KEYS.allTags(pageIndexRef.value, searchRef.value)),
-    queryFn: () =>  getAllTag(pageIndexRef.value, pageSize, searchRef.value),
+    queryFn: () => getAllTag(pageIndexRef.value, pageSize, searchRef.value),
     placeholderData: (prev) => prev,
-    ...DEFAULT_CONFIG
+    ...DEFAULT_CONFIG,
   });
 
   return {
@@ -31,6 +35,5 @@ export const useAllTags = (pageIndex: MaybeRef<number>, pageSize: number, search
     isAllTagsError: query.error,
     allTagsError: query.error,
     allTagsRefetch: query.refetch,
-  }
-
-}
+  };
+};
