@@ -54,11 +54,6 @@ export const useHeader = () => {
           icon: 'i-lucide-user-round-cog',
           to: '/admin/accounts',
         },
-        {
-          label: 'Paramètres',
-          icon: 'i-lucide-settings',
-          to: '/admin/parameters',
-        },
       ],
     },
     {

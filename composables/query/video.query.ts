@@ -166,8 +166,10 @@ export const useUncategorisedVideos = (
   return {
     uncategorisedVideos: query.data,
     isUncategorisedVideoLoading: query.isPending,
+    isUncategorisedVideosSuccess: query.isSuccess,
     isUncategorisedVideoError: query.isError,
-    uncategorisedVideoError: query.error, // Correction du nom
+    uncategorisedVideoError: query.error,
+    uncategorisedVideoRefetch: query.refetch,
   };
 };
 

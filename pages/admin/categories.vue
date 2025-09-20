@@ -8,9 +8,10 @@ import { Plus, Trash2, Pencil } from 'lucide-vue-next';
 import DeleteModal from '~/components/modals/delete-modal.vue';
 import EditCategoryModal from '~/components/modals/edit-category-modal.vue';
 import type { Category } from '~/models/category';
+import AdminCard from '~/components/admin-card.vue';
+import Error from '~/components/layout/Error.vue';
 
 const overlay = useOverlay();
-
 const deleteModal = overlay.create(DeleteModal,{
   props:{
     title:"Suppression d'une catégorie",
@@ -20,11 +21,13 @@ const deleteModal = overlay.create(DeleteModal,{
 });
 const editModal = overlay.create(EditCategoryModal);
 
+
 const search = ref<string>('');
-const { allCategories } = useAllCategories(search);
+const { allCategories, isAllCategoriesSuccess, isAllCategoriesError, isAllCategoriesLoading } = useAllCategories(search);
 const { addCategoryAsync } = useAddCategory();
 const { updateCategoryAsync } = useUpdateCategory();
 const { deleteCategoryAsync } = useDeleteCategory();
+const {stopLoading, startLoading} = useLoading()
 
 const handleCreateCategoryClick = async (event?: Category) => {
   const instance = editModal.open({
@@ -57,34 +60,40 @@ const handleDeleteCategoryClick = async (event?: Category) => {
     console.error(err);
   }
 }
+
+watch(isAllCategoriesLoading, (val) => {
+  if(val) startLoading()
+  else stopLoading()
+}, {immediate: true});
+
 </script>
 
 <template>
   <main class="mx-4 w-full space-y-5">
-    <div class="flex justify-end">
-      <UButton
-        color="info"
-        class="w-full md:w-fit px-8 py-2 cursor-pointer flex flex-row justify-center"
-        @click="handleCreateCategoryClick(null)"
-      >
+    <div v-if="isAllCategoriesSuccess">
+      <div class="flex justify-end">
+        <UButton
+          color="info"
+          class="w-full md:w-fit px-8 py-2 cursor-pointer flex flex-row justify-center"
+          @click="handleCreateCategoryClick(null)"
+        >
           <Plus />
           Catégorie
-      </UButton>
-    </div>
-    <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5">
-      <div
-        v-for="category in allCategories?.categories"
-        :key="category.id"
-        class="flex justify-center items-center border py-6 relative rounded-lg group"
-      >
-        <div class="absolute top-2 right-2 md:invisible group-hover:visible flex flex-col gap-3">
-          <button class="cursor-pointer" @click.stop="handleCreateCategoryClick(category)"><Pencil class="size-5"/></button>
-          <button class="cursor-pointer" @click.stop="handleDeleteCategoryClick(category)"><Trash2 class="size-5"/></button>
-        </div>
-
-        <p>{{ category.name }}</p>
+        </UButton>
       </div>
-    </section>
+      <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-5">
+          <admin-card v-for="category in allCategories.categories"
+                      :key="category.id"
+                      @delete="handleDeleteCategoryClick(category)"
+                      @edit="handleCreateCategoryClick(category)">
+            <p>{{category.name}}</p>
+          </admin-card>
+      </section>
+    </div>
+    <div v-else-if="isAllCategoriesError">
+      <Error />
+    </div>
+
   </main>
 </template>
 

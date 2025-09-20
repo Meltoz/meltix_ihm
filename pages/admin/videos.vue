@@ -3,6 +3,7 @@
 import { useUncategorisedVideos } from '~/composables/query/video.query';
 import { requestScanVideo } from '~/services/video.service';
 import { definePageMeta } from '#imports';
+import Error from '~/components/layout/Error.vue';
 
 definePageMeta({
   searchPagination: true
@@ -13,7 +14,7 @@ const pageSize = 20;
 
 const {stopLoading, startLoading} = useLoading();
 
-const {uncategorisedVideos, isUncategorisedVideoLoading} = useUncategorisedVideos(currentPage, pageSize, searchQuery);
+const {uncategorisedVideos, isUncategorisedVideoLoading, isUncategorisedVideosSuccess, isUncategorisedVideoError, uncategorisedVideoRefetch } = useUncategorisedVideos(currentPage, pageSize, searchQuery);
 
 const handleScanClick = async () => {
   await requestScanVideo();
@@ -26,24 +27,29 @@ watch(isUncategorisedVideoLoading, (val) => {
 </script>
 <template>
   <main class="mx-2 w-full">
-    <div class="mb-5 flex flex-col md:flex-row items-start md:justify-between items-center space-y-3">
-      <h2 class="text-3xl font-medium">Vidéo non catégorisés ({{uncategorisedVideos?.totalCount}} videos)</h2>
-      <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20" @click="handleScanClick" />
-    </div>
+    <div v-if="isUncategorisedVideosSuccess">
+      <section class="mb-5 flex flex-col md:flex-row items-start md:justify-between items-center space-y-3">
+        <h2 class="text-3xl font-medium">Vidéo non catégorisés ({{uncategorisedVideos?.totalCount}} videos)</h2>
+        <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20" @click="handleScanClick" />
+      </section>
 
-    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5">
-      <VideoCard v-for="video in uncategorisedVideos?.videos" :key="video.id" :video="video" size="l" :edit="true" />
-    </section>
-    <div v-if="uncategorisedVideos?.totalCount > pageSize" class="flex justify-center my-8">
-      <UPagination
-        :default-page="(currentPage) +1"
-        :items-per-page="pageSize"
-        :page="currentPage+1"
-        color="info"
-        variant="ghost"
-        :total="uncategorisedVideos?.totalCount"
-        show-edges
-        @update:page="(p) => goToPage(p-1)" />
+      <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5">
+        <VideoCard v-for="video in uncategorisedVideos?.videos" :key="video.id" :video="video" size="l" :edit="true" />
+      </section>
+      <section v-if="uncategorisedVideos?.totalCount > pageSize" class="flex justify-center my-8">
+        <UPagination
+          :default-page="(currentPage) +1"
+          :items-per-page="pageSize"
+          :page="currentPage+1"
+          color="info"
+          variant="ghost"
+          :total="uncategorisedVideos?.totalCount"
+          show-edges
+          @update:page="(p) => goToPage(p-1)" />
+      </section>
+    </div>
+    <div v-else-if="isUncategorisedVideoError">
+      <Error />
     </div>
   </main>
 </template>

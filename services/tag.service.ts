@@ -1,3 +1,5 @@
+import type { Tag } from '~/models/tag';
+
 const endpoint = 'tag';
 export const searchTags = async (search: string): Promise<string[]> => {
   const params = new URLSearchParams({
@@ -8,3 +10,19 @@ export const searchTags = async (search: string): Promise<string[]> => {
     method: HTTP_METHODS.GET,
   });
 };
+
+export const getAllTag =  async (pageIndex: number, pageSize: number, search: string): Promise<{ tags: Tag[], totalCount: number }> => {
+  const params = new URLSearchParams({
+    pageSize: pageSize.toString(),
+    pageIndex: pageIndex.toString(),
+    searchTerm: search,
+  })
+  const response  = await useFetchCustomWithCount<Tag[]>(`${endpoint}/search?${params.toString()}`, {
+    method: HTTP_METHODS.GET,
+  });
+
+  return {
+    tags: response.data,
+    totalCount: response.totalCount
+  }
+}
