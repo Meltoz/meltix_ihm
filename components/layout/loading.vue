@@ -12,12 +12,11 @@ const { isLoading } = useLoading()
 </script>
 
 <style scoped>
-/* HTML: <div class="loader"></div> */
 .loader {
   height: 15px;
   aspect-ratio: 5;
   display: grid;
-  --_g: no-repeat radial-gradient(farthest-side,oklch(62.3% 0.214 259.815) 94%, #0000);
+  --_g: no-repeat radial-gradient(farthest-side, oklch(80.9% 0.105 251.813) 94%, #0000);
 }
 .loader:before,
 .loader:after {

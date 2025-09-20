@@ -3,7 +3,7 @@ export const useSearchPagination = () => {
   const route = useRoute();
 
   const currentPage = ref(parseInt(route.query.page) || 0);
-  const searchQuery = ref(route.query.q || '');
+  const searchQuery = ref<string>(route.query.q || '');
 
   // Fonction pour mettre à jour l'URL
   const updateURL = (page: number = currentPage.value, query = searchQuery.value) => {
