@@ -49,7 +49,7 @@ watch(isUncategorisedVideoLoading, (val) => {
       </section>
     </div>
     <div v-else-if="isUncategorisedVideoError">
-      <Error />
+      <Error @retry="uncategorisedVideoRefetch"/>
     </div>
   </main>
 </template>
