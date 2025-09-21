@@ -2,8 +2,7 @@
 
 import { useAllCategories } from '~/composables/query/category.query';
 
-const search = ref<string>('')
-const {allCategories} = useAllCategories(search);
+const {allCategories} = useAllCategories(0,200,"");
 </script>
 
 <template>
