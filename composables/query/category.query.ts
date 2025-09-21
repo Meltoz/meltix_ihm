@@ -9,10 +9,15 @@ import type { Category } from '~/models/category';
 
 export const CATEGORY_QUERY_KEYS = {
   category: ['category'] as const,
-  all: (pageIndex?: number, search?: string) => [...CATEGORY_QUERY_KEYS.category, 'all', pageIndex, search] as const,
+  all: (pageIndex?: number, search?: string) =>
+    [...CATEGORY_QUERY_KEYS.category, 'all', pageIndex, search] as const,
 } as const;
 
-export const useAllCategories = (pageIndex: MaybeRef<number>, pageSize: number, search: MaybeRef<string>) => {
+export const useAllCategories = (
+  pageIndex: MaybeRef<number>,
+  pageSize: number,
+  search: MaybeRef<string>
+) => {
   const searchRef = toRef(search);
   const pageIndexRef = toRef(pageIndex);
 
