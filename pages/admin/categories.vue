@@ -11,6 +11,10 @@ import type { Category } from '~/models/category';
 import AdminCard from '~/components/admin-card.vue';
 import Error from '~/components/layout/Error.vue';
 
+definePageMeta({
+  searchPagination: true,
+});
+
 const overlay = useOverlay();
 const deleteModal = overlay.create(DeleteModal,{
   props:{
@@ -21,9 +25,10 @@ const deleteModal = overlay.create(DeleteModal,{
 });
 const editModal = overlay.create(EditCategoryModal);
 
+const {searchQuery, currentPage, goToPage} = useSearchPagination();
+const pageSize = 20;
 
-const search = ref<string>('');
-const { allCategories, isAllCategoriesSuccess, isAllCategoriesError, isAllCategoriesLoading } = useAllCategories(search);
+const { allCategories, isAllCategoriesSuccess, isAllCategoriesError, isAllCategoriesLoading } = useAllCategories(currentPage, pageSize, searchQuery);
 const { addCategoryAsync } = useAddCategory();
 const { updateCategoryAsync } = useUpdateCategory();
 const { deleteCategoryAsync } = useDeleteCategory();
@@ -31,7 +36,7 @@ const {stopLoading, startLoading} = useLoading()
 
 const handleCreateCategoryClick = async (event?: Category) => {
   const instance = editModal.open({
-    category: event || {},
+    category: event || {} as Category,
   });
   const category = await instance.result;
 
@@ -88,6 +93,17 @@ watch(isAllCategoriesLoading, (val) => {
                       @edit="handleCreateCategoryClick(category)">
             <p>{{category.name}}</p>
           </admin-card>
+      </section>
+      <section v-if="allCategories.totalCount > pageSize" class="flex justify-center my-8">
+        <UPagination
+          :default-page="(currentPage) +1"
+          :items-per-page="pageSize"
+          :page="currentPage+1"
+          color="info"
+          variant="ghost"
+          :total="allCategories.totalCount"
+          show-edges
+          @update:page="(p) => goToPage(p-1)" />
       </section>
     </div>
     <div v-else-if="isAllCategoriesError">

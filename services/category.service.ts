@@ -3,11 +3,17 @@ import type { Category } from '~/models/category';
 const endpoint = 'category';
 
 export const getAllCategories = async (
+  pageIndex: number,
+  pageSize: number,
   search: string
 ): Promise<{ categories: Category[]; totalCount: number }> => {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams({
+    pageIndex: pageIndex.toString(),
+    pageSize: pageSize.toString(),
+  });
+
   if (search && search !== '') {
-    params.set('search', search);
+    params.set('name', search);
   }
 
   const response = await useFetchCustomWithCount<Category[]>(
