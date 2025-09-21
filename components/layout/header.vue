@@ -16,6 +16,5 @@ const {mobileLinks} = useHeader();
         <UNavigationMenu :items="mobileLinks" orientation="vertical" :ui="{item:'text-7xl', label:'text-7xl', link:'text-2xl'}"/>
       </template>
     </UPopover>
-
   </div>
 </template>

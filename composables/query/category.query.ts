@@ -9,15 +9,21 @@ import type { Category } from '~/models/category';
 
 export const CATEGORY_QUERY_KEYS = {
   category: ['category'] as const,
-  all: (search?: string) => [...CATEGORY_QUERY_KEYS.category, 'all', search] as const,
+  all: (pageIndex?: number, search?: string) =>
+    [...CATEGORY_QUERY_KEYS.category, 'all', pageIndex, search] as const,
 } as const;
 
-export const useAllCategories = (search: MaybeRef<string>) => {
+export const useAllCategories = (
+  pageIndex: MaybeRef<number>,
+  pageSize: number,
+  search: MaybeRef<string>
+) => {
   const searchRef = toRef(search);
+  const pageIndexRef = toRef(pageIndex);
 
   const query = useQuery({
-    queryKey: computed(() => CATEGORY_QUERY_KEYS.all(searchRef.value)),
-    queryFn: () => getAllCategories(searchRef.value),
+    queryKey: computed(() => CATEGORY_QUERY_KEYS.all(pageIndexRef.value, searchRef.value)),
+    queryFn: () => getAllCategories(pageIndexRef.value, pageSize, searchRef.value),
     placeholderData: (prev) => prev,
   });
 
