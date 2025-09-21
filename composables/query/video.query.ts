@@ -19,12 +19,10 @@ import type { Video, VideoCard } from '~/models/video';
 // Keys
 export const VIDEO_QUERY_KEYS = {
   videos: ['videos'] as const,
-  allVideos: (pageIndex?: number, search?: string) =>
-    [...VIDEO_QUERY_KEYS.videos, 'all', pageIndex, search] as const,
-  latestVideos: (pageIndex?: number, pageSize?: number) =>
-    [...VIDEO_QUERY_KEYS.videos, 'latest', pageIndex, pageSize] as const,
-  uncategorised: (pageIndex?: number, pageSize?: number, search?: string) =>
-    [...VIDEO_QUERY_KEYS.videos, 'uncategorised', pageIndex, pageSize, search] as const,
+  allVideos: (pageIndex?: number, sort?: string, search?: string) =>
+    [...VIDEO_QUERY_KEYS.videos, 'all', pageIndex, sort, search] as const,
+  uncategorised: (pageIndex?: number, pageSize?: number, sort?:string, search?: string) =>
+    [...VIDEO_QUERY_KEYS.videos, 'uncategorised', pageIndex, pageSize, sort, search] as const,
   detail: (slug: string) => [...VIDEO_QUERY_KEYS.videos, 'detail', slug] as const,
   recommendations: (slug: string) => [...VIDEO_QUERY_KEYS.videos, 'recommendations', slug] as const,
 } as const;
@@ -36,10 +34,13 @@ const DEFAULT_CONFIG = {
   retry: 1,
 } as const;
 
-export const useAllVideos = (pageIndex: Ref<number>, pageSize: number, search: Ref<string>) => {
+export const useAllVideos = (pageIndex: MaybeRef<number>, pageSize: number, sort: MaybeRef<string>, search: MaybeRef<string>) => {
+  const pageIndexRef = toRef(pageIndex);
+  const sortRef = toRef(sort);
+  const searchRef = toRef(search);
   const query = useQuery({
-    queryKey: computed(() => VIDEO_QUERY_KEYS.allVideos(unref(pageIndex), unref(search))),
-    queryFn: () => getAllVideos(unref(pageIndex), pageSize, unref(search)),
+    queryKey: computed(() => VIDEO_QUERY_KEYS.allVideos(pageIndexRef.value, sortRef.value, searchRef.value)),
+    queryFn: () => getAllVideos(pageIndexRef.value, pageSize, sortRef.value, searchRef.value),
     placeholderData: (prev) => prev,
     ...DEFAULT_CONFIG,
   });
@@ -124,9 +125,6 @@ export const useUpdateVideo = () => {
           queryKey: VIDEO_QUERY_KEYS.allVideos(),
         }),
         queryClient.invalidateQueries({
-          queryKey: VIDEO_QUERY_KEYS.latestVideos(),
-        }),
-        queryClient.invalidateQueries({
           queryKey: VIDEO_QUERY_KEYS.uncategorised(),
         }),
         queryClient.invalidateQueries({
@@ -150,15 +148,20 @@ export const useUpdateVideo = () => {
 };
 
 export const useUncategorisedVideos = (
-  pageIndex: Ref<number>,
+  pageIndex: MaybeRef<number>,
   pageSize: number,
-  search: Ref<string>
+  sort: MaybeRef<string>,
+  search: MaybeRef<string>
 ) => {
+  const pageIndexRef = toRef(pageIndex);
+  const sortRef = toRef(sort);
+  const searchRef = toRef(search);
+
   const query = useQuery({
     queryKey: computed(() =>
-      VIDEO_QUERY_KEYS.uncategorised(unref(pageIndex), pageSize, unref(search))
+      VIDEO_QUERY_KEYS.uncategorised(pageIndexRef.value, pageSize, sortRef.value, searchRef.value)
     ),
-    queryFn: () => getUncategorisedVideos(unref(pageIndex), pageSize, unref(search)),
+    queryFn: () => getUncategorisedVideos(pageIndexRef.value, pageSize, sortRef.value, searchRef.value),
     placeholderData: (prev) => prev,
     ...DEFAULT_CONFIG,
   });
@@ -173,19 +176,3 @@ export const useUncategorisedVideos = (
   };
 };
 
-export const useLatestVideo = (pageIndex: Ref<number>, pageSize: number) => {
-  const query = useQuery({
-    queryKey: computed(() => VIDEO_QUERY_KEYS.latestVideos(unref(pageIndex), pageSize)),
-    queryFn: () => getLatest(unref(pageIndex), pageSize),
-    placeholderData: (prev) => prev,
-    ...DEFAULT_CONFIG,
-  });
-
-  return {
-    latestVideos: query.data,
-    isLatestVideoLoading: query.isPending,
-    isLatestVideoError: query.isError,
-    latestVideosError: query.error,
-    isLatestVideoSuccess: query.isSuccess,
-  };
-};

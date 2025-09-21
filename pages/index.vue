@@ -15,13 +15,15 @@ useHead({
 
 const {currentPage, searchQuery, goToPage} = useSearchPagination();
 const pageSize = 4*5;
+const direction: Ref<'descending'|'ascending'> = ref('descending');
 const {startLoading, stopLoading} = useLoading()
 
+const sort = computed(() => `update_${direction.value}`);
 const loadedCount = ref(0)
 const totalImages = computed(() => allVideos.value?.videos?.length || 0)
 const allLoaded = computed(() => totalImages.value > 0 && loadedCount.value >= totalImages.value)
 
-const {allVideos, isAllVideosLoading, isAllVideosSuccess, isAllVideosError} = useAllVideos(currentPage, pageSize, searchQuery);
+const {allVideos, isAllVideosLoading, isAllVideosSuccess, isAllVideosError} = useAllVideos(currentPage, pageSize, sort, searchQuery);
 
 const onImageVideoLoad = () =>{
   loadedCount.value++;
@@ -39,6 +41,11 @@ watchEffect(() => {
 <template>
   <main class="w-full px-2">
     <div v-if="isAllVideosSuccess">
+      <section class="flex gap-10 my-3">
+        <button @click="direction='descending'">Les plus recentes</button>
+        <button @click="direction='ascending'">Les plus anciennes</button>
+      </section>
+
       <section class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5 w-full">
         <video-card v-for="video in allVideos.videos"
                     :video="video"
