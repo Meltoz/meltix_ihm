@@ -32,24 +32,19 @@ export const getAllTag = async (
   };
 };
 
-export const editTag = async (
-  tag: Tag,
-): Promise<Tag> => {
-
+export const editTag = async (tag: Tag): Promise<Tag> => {
   return await useFetchCustom<Tag>(`${endpoint}/edit`, {
     method: HTTP_METHODS.PATCH,
-    body: JSON.stringify(tag)
+    body: JSON.stringify(tag),
   });
-}
+};
 
-export const deleteTag = async (
-  id:string
-) : Promise<void> => {
-  const params= new URLSearchParams({
-    id: id
-  })
+export const deleteTag = async (id: string): Promise<void> => {
+  const params = new URLSearchParams({
+    id: id,
+  });
 
   return await useFetchCustom(`${endpoint}/delete?${params}`, {
     method: HTTP_METHODS.DELETE,
   });
-}
+};

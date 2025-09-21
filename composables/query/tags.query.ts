@@ -48,14 +48,13 @@ export const useEditTag = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: TAGS_QUERY_KEYS.tags
-        })
-        ]
-      )
+          queryKey: TAGS_QUERY_KEYS.tags,
+        }),
+      ]);
     },
     onError: (error) => {
       console.log(error);
-    }
+    },
   });
 
   return {
@@ -63,11 +62,11 @@ export const useEditTag = () => {
     isEditTagLoading: query.isPending,
     isEditTagSuccess: query.isSuccess,
     isEditTagError: query.error,
-    editTagError: query.error
-  }
-}
+    editTagError: query.error,
+  };
+};
 
-export const useDeleteTag =() => {
+export const useDeleteTag = () => {
   const queryClient = useQueryClient();
 
   const query = useMutation({
@@ -75,14 +74,14 @@ export const useDeleteTag =() => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: TAGS_QUERY_KEYS.tags
-        })
-      ])
+          queryKey: TAGS_QUERY_KEYS.tags,
+        }),
+      ]);
     },
     onError: (error) => {
       console.log(error);
-    }
-  })
+    },
+  });
 
   return {
     deleteTagAsync: query.mutateAsync,
@@ -90,5 +89,5 @@ export const useDeleteTag =() => {
     isDeleteTagSuccess: query.isSuccess,
     isDeleteTagsError: query.isError,
     deleteTagsError: query.error,
-  }
-}
+  };
+};
