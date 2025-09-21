@@ -13,7 +13,7 @@ useHead({
   title: 'Meltix',
 });
 
-const {currentPage, searchQuery} = useSearchPagination();
+const {currentPage, searchQuery, goToPage} = useSearchPagination();
 const pageSize = 4*5;
 const {startLoading, stopLoading} = useLoading()
 
@@ -54,7 +54,7 @@ watchEffect(() => {
           variant="ghost"
           :total="allVideos.totalCount"
           show-edges
-          @update:page="(p) => {currentPage = p-1; loadedCount=0}"
+          @update:page="(p) => {goToPage(p-1); loadedCount=0}"
         />
       </div>
     </div>
