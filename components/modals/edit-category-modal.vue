@@ -10,8 +10,10 @@ const emit = defineEmits<{
   close: [Category]
 }>();
 
+const name = ref<string>(props.category.name);
+
 const handleSaveClick = () => {
-  const c:Category = {...props.category};
+  const c:Category = {name: name.value, ...props.category};
   emit('close', c);
 }
 </script>

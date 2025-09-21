@@ -6,7 +6,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-<div class="w-full h-80 flex justify-center items-center">
+<div class="w-full h-80 flex justify-center items-center gap-5">
   <div class="text-center">
     <p>Une erreur est survenue. Merci de ressayer plus tard</p>
     <u-button color="info" @click="emit('retry')" label="Ressayez" />
