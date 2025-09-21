@@ -21,7 +21,7 @@ export const VIDEO_QUERY_KEYS = {
   videos: ['videos'] as const,
   allVideos: (pageIndex?: number, sort?: string, search?: string) =>
     [...VIDEO_QUERY_KEYS.videos, 'all', pageIndex, sort, search] as const,
-  uncategorised: (pageIndex?: number, pageSize?: number, sort?:string, search?: string) =>
+  uncategorised: (pageIndex?: number, pageSize?: number, sort?: string, search?: string) =>
     [...VIDEO_QUERY_KEYS.videos, 'uncategorised', pageIndex, pageSize, sort, search] as const,
   detail: (slug: string) => [...VIDEO_QUERY_KEYS.videos, 'detail', slug] as const,
   recommendations: (slug: string) => [...VIDEO_QUERY_KEYS.videos, 'recommendations', slug] as const,
@@ -34,12 +34,19 @@ const DEFAULT_CONFIG = {
   retry: 1,
 } as const;
 
-export const useAllVideos = (pageIndex: MaybeRef<number>, pageSize: number, sort: MaybeRef<string>, search: MaybeRef<string>) => {
+export const useAllVideos = (
+  pageIndex: MaybeRef<number>,
+  pageSize: number,
+  sort: MaybeRef<string>,
+  search: MaybeRef<string>
+) => {
   const pageIndexRef = toRef(pageIndex);
   const sortRef = toRef(sort);
   const searchRef = toRef(search);
   const query = useQuery({
-    queryKey: computed(() => VIDEO_QUERY_KEYS.allVideos(pageIndexRef.value, sortRef.value, searchRef.value)),
+    queryKey: computed(() =>
+      VIDEO_QUERY_KEYS.allVideos(pageIndexRef.value, sortRef.value, searchRef.value)
+    ),
     queryFn: () => getAllVideos(pageIndexRef.value, pageSize, sortRef.value, searchRef.value),
     placeholderData: (prev) => prev,
     ...DEFAULT_CONFIG,
@@ -161,7 +168,8 @@ export const useUncategorisedVideos = (
     queryKey: computed(() =>
       VIDEO_QUERY_KEYS.uncategorised(pageIndexRef.value, pageSize, sortRef.value, searchRef.value)
     ),
-    queryFn: () => getUncategorisedVideos(pageIndexRef.value, pageSize, sortRef.value, searchRef.value),
+    queryFn: () =>
+      getUncategorisedVideos(pageIndexRef.value, pageSize, sortRef.value, searchRef.value),
     placeholderData: (prev) => prev,
     ...DEFAULT_CONFIG,
   });
@@ -175,4 +183,3 @@ export const useUncategorisedVideos = (
     uncategorisedVideoRefetch: query.refetch,
   };
 };
-

@@ -14,7 +14,7 @@ export const getAllVideos = async (
   const params = new URLSearchParams({
     pageIndex: pageIndex.toString(),
     pageSize: pageSize.toString(),
-    sort: sort
+    sort: sort,
   });
 
   if (search !== '') {
@@ -97,7 +97,7 @@ export const getUncategorisedVideos = async (
   const params = new URLSearchParams({
     pageIndex: pageIndex.toString(),
     pageSize: pageSize.toString(),
-    sort: sort
+    sort: sort,
   });
   if (search !== '') {
     params.append('search', search);
