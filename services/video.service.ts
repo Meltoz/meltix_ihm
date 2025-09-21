@@ -8,11 +8,13 @@ const endpoint = '/video';
 export const getAllVideos = async (
   pageIndex: number,
   pageSize: number,
+  sort: string,
   search: string
 ): Promise<{ videos: VideoCard[]; totalCount: number }> => {
   const params = new URLSearchParams({
     pageIndex: pageIndex.toString(),
     pageSize: pageSize.toString(),
+    sort: sort,
   });
 
   if (search !== '') {
@@ -89,11 +91,13 @@ export const updateVideo = async (video: Video): Promise<Video> => {
 export const getUncategorisedVideos = async (
   pageIndex: number,
   pageSize: number,
+  sort: string,
   search: string
 ): Promise<{ videos: Video[]; totalCount: number }> => {
   const params = new URLSearchParams({
     pageIndex: pageIndex.toString(),
     pageSize: pageSize.toString(),
+    sort: sort,
   });
   if (search !== '') {
     params.append('search', search);

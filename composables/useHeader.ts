@@ -16,12 +16,6 @@ export const useHeader = () => {
       label: 'Videos',
       icon: 'i-lucide-square-play',
       to: '/',
-      children: [
-        {
-          label: 'Most recents',
-          to: '/recent',
-        },
-      ],
     },
     {
       label: 'Categories',
@@ -68,12 +62,6 @@ export const useHeader = () => {
       label: 'Videos',
       icon: 'i-lucide-square-play',
       to: '/',
-      children: [
-        {
-          label: 'Most recents',
-          to: '/recent',
-        },
-      ],
     },
     {
       label: 'Categories',
