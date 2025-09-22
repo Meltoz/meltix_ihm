@@ -11,7 +11,8 @@ import {
   getDetail,
   getLatest,
   getRecommendations,
-  getUncategorisedVideos, requestScanVideo,
+  getUncategorisedVideos,
+  requestScanVideo,
   updateVideo,
 } from '~/services/video.service';
 import type { Video, VideoCard } from '~/models/video';
@@ -177,20 +178,17 @@ export const useUncategorisedVideos = (
   };
 };
 
-
 export const useRequestScan = () => {
   const queryClient = useQueryClient();
 
   const query = useMutation({
     mutationFn: () => requestScanVideo(),
     onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({queryKey: VIDEO_QUERY_KEYS.videos})
-      ])
+      await Promise.all([queryClient.invalidateQueries({ queryKey: VIDEO_QUERY_KEYS.videos })]);
     },
     onError: async (error) => {
       console.log(error);
-    }
+    },
   });
 
   return {
@@ -200,4 +198,4 @@ export const useRequestScan = () => {
     isRequestScanError: query.isError,
     isRequestScanSuccess: query.isSuccess,
   };
-}
+};
