@@ -1,7 +1,7 @@
 import { useAllCategories } from '~/composables/query/category.query';
 
 export const useHeader = () => {
-  const { allCategories, isAllCategoriesLoading, isAllCategoriesError } = useAllCategories(ref(''));
+  const { allCategories, isAllCategoriesLoading, isAllCategoriesError } = useAllCategories(0,200, '');
 
   const categoryChildren = computed(
     () =>

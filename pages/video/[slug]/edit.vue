@@ -13,7 +13,7 @@ const { video, isVideoSuccess } = useDetailVideo(slug);
 
 const categoriesSearched = ref<string>('');
 const debouncedSearch = useDebounce(categoriesSearched, 400);
-const { allCategories } = useAllCategories(debouncedSearch);
+const { allCategories } = useAllCategories(0,100,debouncedSearch);
 
 const { updateVideoAsync } = useUpdateVideo();
 
@@ -48,7 +48,6 @@ async function handleClickSave(event: FormSubmitEvent<FormData>) {
     tags: state.tags,
   } as Video;
 
-  console.log(videoToUpdate);
   try {
     await updateVideoAsync(videoToUpdate);
     navigateTo('/');
@@ -107,7 +106,7 @@ watch(video, (newVideo) => {
           <UFormField name="categoryName" label="Catégorie" class="basis-1/4">
             <UInputMenu
               class="w-full"
-              :items="allCategories?.categories"
+              :items="allCategories.categories"
               v-model="state.categoryName"
               value-key="name"
               label-key="name"
