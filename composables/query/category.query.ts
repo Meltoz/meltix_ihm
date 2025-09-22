@@ -9,9 +9,7 @@ import type { Category } from '~/models/category';
 
 export const CATEGORY_QUERY_KEYS = {
   category: ['category'] as const,
-  allBase: () => [
-    ...CATEGORY_QUERY_KEYS.category, 'all'
-  ],
+  allBase: () => [...CATEGORY_QUERY_KEYS.category, 'all'],
   all: (pageIndex: number, search: string) =>
     [...CATEGORY_QUERY_KEYS.allBase(), pageIndex, search] as const,
 } as const;
@@ -73,8 +71,8 @@ export const useUpdateCategory = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-        queryKey: CATEGORY_QUERY_KEYS.allBase(),
-        })
+          queryKey: CATEGORY_QUERY_KEYS.allBase(),
+        }),
       ]);
     },
     onError: (error) => {
