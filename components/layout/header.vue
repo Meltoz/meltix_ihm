@@ -7,7 +7,7 @@ const {mobileLinks} = useHeader();
 </script>
 
 <template>
-  <div class=" px-2 my-4 flex justify-between items-center gap-3">
+  <div class=" my-4 flex justify-between items-center gap-3">
     <h1 class="text-blue-300 text-5xl md:text-6xl xl:text-7xl cursor-pointer font-poppins italic font-bold" @click="navigateTo('/')">Meltix</h1>
     <Search />
     <UPopover mode="click" :open-delay="100" :close-delay="200" class="block md:hidden">

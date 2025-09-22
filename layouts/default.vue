@@ -1,5 +1,5 @@
 <template>
-  <UMain class="max-w-full">
+  <UMain class="mx-2 overflow-x-hidden">
     <Header class="sticky top-0 backdrop-blur-lg z-50"/>
     <div class="flex">
       <div
@@ -12,7 +12,7 @@
           class="text-gray-500 hover:text-blue-500 cursor-pointer"/></button>
         <UNavigationMenu :items="desktopLinks" orientation="vertical" color="info" variant="outline" :open="false" :collapsed="close" :popover="close" class="my-3"/>
       </div>
-      <slot class="grow"/>
+      <slot class=""/>
     </div>
     <Footer />
   </UMain>
