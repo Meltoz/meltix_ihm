@@ -129,8 +129,14 @@ export const useUpdateVideo = () => {
     onSuccess: async (updatedVideo, video) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: VIDEO_QUERY_KEYS.videos,
+          queryKey: VIDEO_QUERY_KEYS.allVideos(),
         }),
+        queryClient.invalidateQueries({
+          queryKey: VIDEO_QUERY_KEYS.uncategorised(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: VIDEO_QUERY_KEYS.detail(video.slug),
+        })
       ]);
     },
     onError: (error) => {
