@@ -9,8 +9,11 @@ import type { Category } from '~/models/category';
 
 export const CATEGORY_QUERY_KEYS = {
   category: ['category'] as const,
-  all: (pageIndex?: number, search?: string) =>
-    [...CATEGORY_QUERY_KEYS.category, 'all', pageIndex, search] as const,
+  allBase: () => [
+    ...CATEGORY_QUERY_KEYS.category, 'all'
+  ],
+  all: (pageIndex: number, search: string) =>
+    [...CATEGORY_QUERY_KEYS.allBase(), pageIndex, search] as const,
 } as const;
 
 export const useAllCategories = (
@@ -44,7 +47,7 @@ export const useAddCategory = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: CATEGORY_QUERY_KEYS.all(),
+          queryKey: CATEGORY_QUERY_KEYS.allBase(),
         }),
       ]);
     },
@@ -68,7 +71,11 @@ export const useUpdateCategory = () => {
   const query = useMutation({
     mutationFn: (category: Category) => updateCategory(category),
     onSuccess: async () => {
-      await Promise.all([queryClient.invalidateQueries({ queryKey: CATEGORY_QUERY_KEYS.all() })]);
+      await Promise.all([
+        queryClient.invalidateQueries({
+        queryKey: CATEGORY_QUERY_KEYS.allBase(),
+        })
+      ]);
     },
     onError: (error) => {
       console.log('Error when updating category: ', error);
@@ -91,7 +98,7 @@ export const useDeleteCategory = () => {
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: CATEGORY_QUERY_KEYS.all(),
+          queryKey: CATEGORY_QUERY_KEYS.allBase(),
         }),
       ]);
     },
