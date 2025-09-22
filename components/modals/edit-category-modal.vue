@@ -13,7 +13,8 @@ const emit = defineEmits<{
 const name = ref<string>(props.category.name);
 
 const handleSaveClick = () => {
-  const c:Category = {name: name.value, ...props.category};
+  const c:Category = {...props.category, name: name.value};
+  console.log(c)
   emit('close', c);
 }
 </script>
@@ -25,7 +26,7 @@ const handleSaveClick = () => {
   <template #content>
     <div class="space-y-2">
       <UFormField label="Nom de la catégorie" class="w-full">
-        <UInput v-model="category.name" class="w-full" />
+        <UInput v-model="name" class="w-full" />
       </UFormField>
     </div>
   </template>
