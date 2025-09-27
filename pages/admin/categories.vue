@@ -14,6 +14,9 @@ import Error from '~/components/layout/Error.vue';
 definePageMeta({
   searchPagination: true,
 });
+useHead({
+  title: 'Meltix | Gestion des catégories'
+});
 
 const overlay = useOverlay();
 const deleteModal = overlay.create(DeleteModal,{
@@ -76,7 +79,8 @@ watch(isAllCategoriesLoading, (val) => {
 <template>
   <main class="mx-4 w-full space-y-5">
     <div v-if="isAllCategoriesSuccess">
-      <div class="flex justify-end my-5">
+      <div class="flex justify-between items-center mb-5">
+        <h2 class="text-2xl md:text-3xl font-medium">Tous les catégories</h2>
         <UButton
           color="info"
           class="w-full md:w-fit px-8 py-2 cursor-pointer flex flex-row justify-center"

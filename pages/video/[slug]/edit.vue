@@ -13,9 +13,14 @@ const { video, isVideoSuccess } = useDetailVideo(slug);
 
 const categoriesSearched = ref<string>('');
 const debouncedSearch = useDebounce(categoriesSearched, 400);
+
 const { allCategories } = useAllCategories(0,100,debouncedSearch);
 
 const { updateVideoAsync } = useUpdateVideo();
+
+const videoRef = ref<HTMLVideoElement | null>(null)
+const currentTime = ref(0);
+
 
 const formDataSchema = z.object({
   title: z
@@ -78,6 +83,7 @@ watch(video, (newVideo) => {
     </h2>
     <section class="flex flex-col xl:flex-row justify-between gap-10">
       <video
+        ref="videoRef"
         controls
         class="max-h-[49vh] max-w-[40rem] basis-1/2 bg-black rounded-lg w-full aspect-video"
         v-if="video"
