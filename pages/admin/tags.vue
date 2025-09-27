@@ -9,6 +9,9 @@ import DeleteModal from '~/components/modals/delete-modal.vue';
 definePageMeta({
   searchPagination: true
 });
+useHead({
+  title: 'Meltix | Gestion des tags'
+});
 const overlay = useOverlay();
 
 const deleteModal = overlay.create(DeleteModal, {
@@ -70,7 +73,7 @@ watch(isAllTagsLoading, (val)=> {
 <template>
 <main class="mx-4 w-full">
   <div v-if="isAllTagsSuccess" class="space-y-5">
-    <h3 class="font-poppins text-3xl">Tags</h3>
+    <h2 class="text-2xl md:text-3xl font-medium">Tous les tags</h2>
     <div class="grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-5 w-full">
       <admin-card v-for="tag in allTags.tags"
                   :key="tag.name"

@@ -6,13 +6,17 @@ import Error from '~/components/layout/Error.vue';
 
 definePageMeta({
   searchPagination: true
-})
+});
+useHead({
+  title: 'Meltix | Gestion des vidéos'
+});
 
 const {currentPage, searchQuery, goToPage} = useSearchPagination();
 const pageSize = 20;
 
 const sortDirection: Ref<'ascending'|'descending'> = ref('descending');
 const sort = computed(() => `update_${sortDirection.value}`);
+
 
 const {stopLoading, startLoading} = useLoading();
 
@@ -33,7 +37,7 @@ watch(isUncategorisedVideoLoading, (val) => {
   <main class="w-full">
     <div v-if="isUncategorisedVideosSuccess">
       <section class="mb-2 flex flex-col md:flex-row items-start md:justify-between space-y-3">
-        <h2 class="text-2xl md:text-3xl font-medium">Vidéo non catégorisés ({{uncategorisedVideos?.totalCount}} videos)</h2>
+        <h2 class="text-2xl md:text-3xl font-medium">Vidéo non catégorisés <span class="italic">({{uncategorisedVideos?.totalCount}} videos)</span></h2>
         <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20 cursor-pointer disabled:bg-gray-600" @click="handleScanClick" :disabled="isRequestScanLoading"/>
       </section>
       <section class="my-2">
