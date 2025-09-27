@@ -8,7 +8,7 @@ export const getAllUsers = async (
   sort: string,
   onlyAdmin: boolean,
   pseudo?: string
-): Promise<{ users:UserAdmin[], totalCount: number}> => {
+): Promise<{ users: UserAdmin[]; totalCount: number }> => {
   const params = new URLSearchParams({
     pageIndex: pageIndex.toString(),
     pageSize: pageSize.toString(),
@@ -20,12 +20,15 @@ export const getAllUsers = async (
     params.append('pseudo', pseudo);
   }
 
-  const response = await useFetchCustomWithCount<UserAdmin[]>(`${endpoint}/search?${params.toString()}`, {
-    method: HTTP_METHODS.GET,
-  });
+  const response = await useFetchCustomWithCount<UserAdmin[]>(
+    `${endpoint}/search?${params.toString()}`,
+    {
+      method: HTTP_METHODS.GET,
+    }
+  );
 
   return {
     users: response.data,
-    totalCount: response.totalCount
-  }
+    totalCount: response.totalCount,
+  };
 };

@@ -3,5 +3,5 @@ export interface UserAdmin {
   pseudo: string;
   role: string;
   lastLoggin: Date;
-  LastChangePassword: Date
+  LastChangePassword: Date;
 }
