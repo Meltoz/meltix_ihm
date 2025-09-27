@@ -38,15 +38,15 @@ export const createUser = async (user: UserEdit): Promise<UserAdmin> => {
   return await useFetchCustom(`${endpoint}/create`, {
     method: HTTP_METHODS.POST,
     body: JSON.stringify(user),
-  })
-}
+  });
+};
 
 export const deleteUser = async (id: string): Promise<void> => {
   const params = new URLSearchParams({
-    id: id
+    id: id,
   });
 
   return await useFetchCustom(`${endpoint}/delete?${params.toString()}`, {
     method: HTTP_METHODS.DELETE,
-  })
-}
+  });
+};

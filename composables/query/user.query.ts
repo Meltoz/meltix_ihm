@@ -49,12 +49,12 @@ export const useAddUser = () => {
       await Promise.all([
         await queryClient.invalidateQueries({
           queryKey: USER_QUERY_KEYS.allBase(),
-        })
-      ])
+        }),
+      ]);
     },
     onError: (error) => {
       console.error('Error when creating user : ', error);
-    }
+    },
   });
 
   return {
@@ -62,9 +62,9 @@ export const useAddUser = () => {
     isAddUserLoading: query.isPending,
     isAddUserSuccess: query.isSuccess,
     isAddUserError: query.isError,
-    addUserError: query.error
-  }
-}
+    addUserError: query.error,
+  };
+};
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
@@ -75,19 +75,19 @@ export const useDeleteUser = () => {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: USER_QUERY_KEYS.allBase(),
-        })
-      ])
+        }),
+      ]);
     },
     onError: (error) => {
       console.error('Error when deleting user : ', error);
-    }
-  })
+    },
+  });
 
   return {
     deleteUserAsync: query.mutateAsync,
     isDeleteUserLoading: query.isPending,
     isDeleteUserSuccess: query.isSuccess,
     isDeleteUserError: query.isError,
-    deleteUserError: query.error
-  }
-}
+    deleteUserError: query.error,
+  };
+};
