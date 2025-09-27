@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/vue-query';
-import { getAllUsers } from '~/services/user.service';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { createUser, deleteUser, getAllUsers } from '~/services/user.service';
+import type { UserEdit } from '~/models/userEdit';
 
 export const USER_QUERY_KEYS = {
   users: ['users'] as const,
@@ -36,5 +37,57 @@ export const useAllUsers = (
     isAllUsersSuccess: query.isSuccess,
     refetchAllUser: query.refetch,
     allUserError: query.error,
+  };
+};
+
+export const useAddUser = () => {
+  const queryClient = useQueryClient();
+
+  const query = useMutation({
+    mutationFn: (user: UserEdit) => createUser(user),
+    onSuccess: async () => {
+      await Promise.all([
+        await queryClient.invalidateQueries({
+          queryKey: USER_QUERY_KEYS.allBase(),
+        }),
+      ]);
+    },
+    onError: (error) => {
+      console.error('Error when creating user : ', error);
+    },
+  });
+
+  return {
+    addUserAsync: query.mutateAsync,
+    isAddUserLoading: query.isPending,
+    isAddUserSuccess: query.isSuccess,
+    isAddUserError: query.isError,
+    addUserError: query.error,
+  };
+};
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+
+  const query = useMutation({
+    mutationFn: (id: string) => deleteUser(id),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: USER_QUERY_KEYS.allBase(),
+        }),
+      ]);
+    },
+    onError: (error) => {
+      console.error('Error when deleting user : ', error);
+    },
+  });
+
+  return {
+    deleteUserAsync: query.mutateAsync,
+    isDeleteUserLoading: query.isPending,
+    isDeleteUserSuccess: query.isSuccess,
+    isDeleteUserError: query.isError,
+    deleteUserError: query.error,
   };
 };

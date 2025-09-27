@@ -17,7 +17,6 @@ const pageSize = 20;
 const sortDirection: Ref<'ascending'|'descending'> = ref('descending');
 const sort = computed(() => `update_${sortDirection.value}`);
 
-
 const {stopLoading, startLoading} = useLoading();
 
 const {uncategorisedVideos, isUncategorisedVideoLoading, isUncategorisedVideosSuccess, isUncategorisedVideoError, uncategorisedVideoRefetch } = useUncategorisedVideos(currentPage, pageSize, sort, searchQuery);
