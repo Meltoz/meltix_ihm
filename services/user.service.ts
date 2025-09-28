@@ -55,5 +55,5 @@ export const editUserAdmin = async (user: UserEdit): Promise<UserAdmin> => {
   return await useFetchCustom(`${endpoint}/update`, {
     method: HTTP_METHODS.PATCH,
     body: JSON.stringify(user),
-  })
-}
+  });
+};

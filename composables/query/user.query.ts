@@ -75,12 +75,12 @@ export const useEditUserAdmin = () => {
       await Promise.all([
         await queryClient.invalidateQueries({
           queryKey: USER_QUERY_KEYS.allBase(),
-        })
-      ])
+        }),
+      ]);
     },
     onError: (error) => {
       console.error('Error when editing user : ', error);
-    }
+    },
   });
 
   return {
@@ -89,8 +89,8 @@ export const useEditUserAdmin = () => {
     isEditUserSuccess: query.isSuccess,
     isEditUserError: query.isError,
     editUserError: query.error,
-  }
-}
+  };
+};
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
