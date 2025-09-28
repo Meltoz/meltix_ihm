@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { createUser, deleteUser, getAllUsers } from '~/services/user.service';
+import { createUser, deleteUser, editUserAdmin, getAllUsers } from '~/services/user.service';
 import type { UserEdit } from '~/models/userEdit';
 
 export const USER_QUERY_KEYS = {
@@ -63,6 +63,32 @@ export const useAddUser = () => {
     isAddUserSuccess: query.isSuccess,
     isAddUserError: query.isError,
     addUserError: query.error,
+  };
+};
+
+export const useEditUserAdmin = () => {
+  const queryClient = useQueryClient();
+
+  const query = useMutation({
+    mutationFn: (user: UserEdit) => editUserAdmin(user),
+    onSuccess: async () => {
+      await Promise.all([
+        await queryClient.invalidateQueries({
+          queryKey: USER_QUERY_KEYS.allBase(),
+        }),
+      ]);
+    },
+    onError: (error) => {
+      console.error('Error when editing user : ', error);
+    },
+  });
+
+  return {
+    editUserAsync: query.mutateAsync,
+    isEditUserLoading: query.isPending,
+    isEditUserSuccess: query.isSuccess,
+    isEditUserError: query.isError,
+    editUserError: query.error,
   };
 };
 

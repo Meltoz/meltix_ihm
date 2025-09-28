@@ -55,7 +55,7 @@ export const useHeader = () => {
       ],
     },
     {
-      label: 'My account',
+      label: 'Mon compte',
       icon: 'i-lucide-circle-user-round',
       to: '/myaccount',
     },
@@ -76,28 +76,6 @@ export const useHeader = () => {
       label: 'Administrations',
       icon: 'i-lucide-shield',
       to: '/admin',
-      children: [
-        {
-          label: 'Videos',
-          icon: 'i-lucide-file-text',
-          to: '/admin/videos',
-        },
-        {
-          label: 'Categories',
-          icon: 'i-lucide-file-text',
-          to: '/admin/categories',
-        },
-        {
-          label: 'Tags',
-          icon: 'i-lucide-file-text',
-          to: '/admin/tags',
-        },
-        {
-          label: 'Accounts',
-          icon: 'i-lucide-file-text',
-          to: '/admin/accounts',
-        },
-      ],
     },
     {
       label: 'My account',
