@@ -125,7 +125,7 @@ export const useUpdateVideo = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (video: Video) => updateVideo(video),
+    mutationFn: (video: VideoEdit) => updateVideo(video),
     onSuccess: async (updatedVideo, video) => {
       await Promise.all([
         queryClient.invalidateQueries({

@@ -3,7 +3,7 @@ import { useDetailVideo, useUpdateVideo } from '~/composables/query/video.query'
 import { z } from 'zod';
 import { useAllCategories } from '~/composables/query/category.query';
 import { useDebounce } from '@vueuse/shared';
-import type { Video } from '~/models/video';
+import type { VideoEdit } from '~/models/video';
 import type { FormErrorEvent, FormSubmitEvent } from '#ui/types';
 
 const route = useRoute();
@@ -20,7 +20,10 @@ const { updateVideoAsync } = useUpdateVideo();
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const currentTime = ref(0);
+const useTimecode:Ref<"none" | "timecode" | "img"> = ref("none")
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg']
 
 const formDataSchema = z.object({
   title: z
@@ -33,6 +36,24 @@ const formDataSchema = z.object({
     .max(500),
   tags: z.array(z.string()).optional(),
   categoryName: z.string({ required_error: 'La catégorie est obligatoire' }),
+  timecode: z.string().optional(),
+  img:  z.preprocess(
+    (val) => {
+      if (val instanceof FileList) {
+        return val.length > 0 ? val[0] : undefined; // prendre le 1er fichier ou rien
+      }
+      if (val === "" || val === null) return undefined;
+      return val;
+    },
+    z.instanceof(File)
+      .refine((file) => file.size <= MAX_FILE_SIZE, {
+        message: "L'image est trop lourde (2MB)",
+      })
+      .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+        message: 'Please upload a valid image file (JPEG, PNG, or WebP).',
+      })
+      .optional()
+  ),
 });
 type FormData = z.output<typeof formDataSchema>;
 
@@ -41,6 +62,8 @@ const state = reactive<Partial<FormData>>({
   description: '',
   categoryName: video?.value?.category === 'No category' ? undefined : video.value?.category,
   tags: [],
+  timecode: '',
+  img: '',
 });
 
 
@@ -51,7 +74,9 @@ async function handleClickSave(event: FormSubmitEvent<FormData>) {
     category: state.categoryName,
     description: state.description,
     tags: state.tags,
-  } as Video;
+    timecode: useTimecode.value === 'timecode' ? state.timecode : undefined,
+    img: useTimecode.value === 'img' ? state.img : undefined,
+  } as VideoEdit;
 
   try {
     await updateVideoAsync(videoToUpdate);
@@ -65,6 +90,17 @@ function onFormError(event: FormErrorEvent) {
   console.log('Formulaire invalide ❌', event);
 }
 
+
+const formatTime = (time: number) => {
+  const hours = Math.floor(time / 3600)
+  const minutes = Math.floor((time % 3600) / 60)
+  const seconds = Math.floor(time% 60)
+  const milliseconds = Math.floor((time % 1) * 1000) // partie décimale
+  return `${hours}:${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds
+    .toString()
+    .padStart(3, '0')}`
+}
+
 watch(video, (newVideo) => {
   if (newVideo) {
     state.title = newVideo.title;
@@ -74,6 +110,12 @@ watch(video, (newVideo) => {
     state.tags = newVideo.tags ?? [];
   }
 },{immediate: true});
+
+watch(videoRef, (newVideo) => {
+  videoRef.value.addEventListener('timeupdate', () => {
+    state.timecode = formatTime(videoRef.value?.currentTime)
+  })
+})
 </script>
 
 <template>
@@ -123,15 +165,31 @@ watch(video, (newVideo) => {
             <UInputTags v-model="state.tags" add-on-tab :delimiter="','" class="w-full" />
           </fieldset>
         </div>
-        <fieldset>
-          <UFileUpload
-            icon="i-lucide-image"
-            label="Drop your image here"
-            description="JPG (max. 2MB)"
-            class="w-full max-h-40"
-            disabled
-          />
-        </fieldset>
+        <div>
+          <h2 class="text-sm">Thumbnail</h2>
+          <div class="flex gap-5">
+            <button type="button" @click="useTimecode='none'">Pas de mise à jour</button>
+            <button type="button" @click="useTimecode='timecode'">Utiliser un timecode</button>
+            <button type="button" @click="useTimecode='img'">Utiliser une image</button>
+          </div>
+
+          <fieldset v-if="useTimecode=== 'img'">
+            <UFileUpload
+              v-model="state.img"
+              icon="i-lucide-image"
+              label="Drop your image here"
+              description="JPG (max. 2MB)"
+              class="w-full max-h-40"
+            />
+          </fieldset>
+          <fieldset v-else-if="useTimecode === 'timecode'">
+            Timecode actuel : {{state.timecode}}
+          </fieldset>
+          <fieldset v-else>
+            Pas de mise à jour de thumbnail
+          </fieldset>
+        </div>
+
         <div class="flex justify-end my-5">
           <UButton color="info" size="xl" type="submit">Sauvegarder</UButton>
         </div>
