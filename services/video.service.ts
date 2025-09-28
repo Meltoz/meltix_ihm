@@ -1,4 +1,4 @@
-import type { Video, VideoCard } from '~/models/video';
+import type { Video, VideoCard, VideoEdit } from '~/models/video';
 
 const endpoint = '/video';
 
@@ -71,7 +71,7 @@ export const getRecommendations = async (
   };
 };
 
-export const updateVideo = async (video: Video): Promise<Video> => {
+export const updateVideo = async (video: VideoEdit): Promise<Video> => {
   const formData = new FormData();
   console.log(video);
 

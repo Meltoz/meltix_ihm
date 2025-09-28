@@ -16,3 +16,14 @@ export interface VideoCard {
   slug: string;
   duration: string;
 }
+
+export interface VideoEdit {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  duration: number;
+  tags: string[];
+  timecode?: string;
+  img? : File;
+}
