@@ -25,5 +25,5 @@ export interface VideoEdit {
   duration: number;
   tags: string[];
   timecode?: string;
-  img? : File;
+  img?: File;
 }
