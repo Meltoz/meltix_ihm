@@ -50,3 +50,10 @@ export const deleteUser = async (id: string): Promise<void> => {
     method: HTTP_METHODS.DELETE,
   });
 };
+
+export const editUserAdmin = async (user: UserEdit): Promise<UserAdmin> => {
+  return await useFetchCustom(`${endpoint}/update`, {
+    method: HTTP_METHODS.PATCH,
+    body: JSON.stringify(user),
+  })
+}

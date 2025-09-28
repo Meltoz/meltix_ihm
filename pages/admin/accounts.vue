@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { useAddUser, useAllUsers, useDeleteUser } from '~/composables/query/user.query';
+import { useAddUser, useAllUsers, useDeleteUser, useEditUserAdmin } from '~/composables/query/user.query';
 import { Plus } from 'lucide-vue-next';
 import type { UserAdmin } from '~/models/userAdmin';
 import EditUserModal from '~/components/modals/edit-user-modal.vue';
@@ -18,6 +18,7 @@ const pageSize = 20;
 const {stopLoading, startLoading} = useLoading();
 const {allUsers, isAllUsersSuccess, isAllUsersLoading, isAllUsersError} = useAllUsers(currentPage, pageSize, false, "role_ascending", searchQuery);
 const {addUserAsync, isAddUserSuccess, isAddUserError} = useAddUser();
+const {editUserAsync} = useEditUserAdmin();
 const {deleteUserAsync} = useDeleteUser();
 
 const overlay = useOverlay();
@@ -36,7 +37,7 @@ const handleEditUserClick = async (event?: UserAdmin) => {
   if(!editUser) return;
 
   if(event) {
-    // logique update
+    await editUserAsync(editUser);
   }
   else {
     await addUserAsync(editUser);
