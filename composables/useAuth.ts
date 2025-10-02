@@ -13,17 +13,15 @@ export const useAuth = () => {
       loginUser(pseudo, password);
       await fetchUser();
       console.log(user.value);
-
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const logout = async () => {
     await logoutUser();
     user.value = null;
-  }
+  };
 
   const fetchUser = async () => {
     try {
@@ -39,6 +37,6 @@ export const useAuth = () => {
     isLoginIn: computed(() => !!user.value),
     isAdmin: computed(() => !!user.value && user.value.role === 'Admin'),
     logout: logout,
-    fetchUser : fetchUser,
-  }
-}
+    fetchUser: fetchUser,
+  };
+};

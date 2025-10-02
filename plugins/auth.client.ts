@@ -1,4 +1,4 @@
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const {fetchUser} = useAuth();
+  const { fetchUser } = useAuth();
   await fetchUser();
-})
+});

@@ -11,21 +11,21 @@ export default defineNuxtConfig({
     { src: '~/plugins/lenis.ts', mode: 'client', ssr: false },
   ],
   hooks: {
-    'pages:extend'(pages){
-      function setMiddleware(pages: NuxtPage[]){
-        for(const page of pages){
-          if(page.path.startsWith('/admin')) {
+    'pages:extend'(pages) {
+      function setMiddleware(pages: NuxtPage[]) {
+        for (const page of pages) {
+          if (page.path.startsWith('/admin')) {
             page.meta ||= {};
             page.meta.middleware ||= [];
-            if(!page.meta.middleware.includes('admin')){
-              page.meta.middleware.push('admin')
+            if (!page.meta.middleware.includes('admin')) {
+              page.meta.middleware.push('admin');
             }
           }
-          if(!page.path.startsWith('/login')) {
+          if (!page.path.startsWith('/login')) {
             page.meta ||= {};
             page.meta.middleware ||= [];
-            if(!page.meta.middleware.includes('auth')){
-              page.meta.middleware.push('auth')
+            if (!page.meta.middleware.includes('auth')) {
+              page.meta.middleware.push('auth');
             }
           }
           if (page.children) {
@@ -34,7 +34,7 @@ export default defineNuxtConfig({
         }
       }
       setMiddleware(pages);
-    }
+    },
   },
   modules: ['@nuxt/ui', '@nuxtjs/i18n'],
   runtimeConfig: {

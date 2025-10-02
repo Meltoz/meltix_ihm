@@ -32,7 +32,7 @@ export const useFetchCustom = async <T = unknown>(url: string, options: any): Pr
   const accessToken = useCookie(accessTokenName);
 
   const headers: HeadersInit = {};
-  console.log("Using useFetchCustom accesstoken : ",accessToken.value);
+  console.log('Using useFetchCustom accesstoken : ', accessToken.value);
 
   if (accessToken.value) {
     headers.Authorization = `Bearer ${accessToken.value}`;

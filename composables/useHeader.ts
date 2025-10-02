@@ -7,7 +7,6 @@ export const useHeader = () => {
     ''
   );
 
-
   const categoryChildren = computed(
     () =>
       allCategories.value?.categories?.map((cat) => ({
@@ -16,8 +15,7 @@ export const useHeader = () => {
       })) || []
   );
 
-  const {isAdmin, isLoginIn} = useAuth();
-
+  const { isAdmin, isLoginIn } = useAuth();
 
   const desktopLinks = computed(() => {
     const links = [
@@ -34,8 +32,8 @@ export const useHeader = () => {
       },
     ];
 
-    if(isAdmin.value){
-      links.push( {
+    if (isAdmin.value) {
+      links.push({
         label: 'Administrations',
         icon: 'i-lucide-shield',
         to: '/admin',
@@ -64,12 +62,12 @@ export const useHeader = () => {
       });
     }
 
-    if(isLoginIn.value){
-      links.push( {
+    if (isLoginIn.value) {
+      links.push({
         label: 'Mon compte',
         icon: 'i-lucide-circle-user-round',
         to: '/myaccount',
-      })
+      });
     }
 
     return links;
@@ -90,7 +88,7 @@ export const useHeader = () => {
       },
     ];
 
-    if(isAdmin.value){
+    if (isAdmin.value) {
       links.push({
         label: 'Administrations',
         icon: 'i-lucide-shield',
@@ -98,17 +96,16 @@ export const useHeader = () => {
       });
     }
 
-
-    if(isLoginIn.value){
-      links.push( {
+    if (isLoginIn.value) {
+      links.push({
         label: 'Mon compte',
         icon: 'i-lucide-circle-user-round',
         to: '/myaccount',
-      })
-    };
+      });
+    }
 
     return links;
-  })
+  });
 
   return {
     desktopLinks,
