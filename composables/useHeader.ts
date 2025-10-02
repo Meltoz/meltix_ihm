@@ -7,6 +7,7 @@ export const useHeader = () => {
     ''
   );
 
+
   const categoryChildren = computed(
     () =>
       allCategories.value?.categories?.map((cat) => ({
@@ -15,74 +16,99 @@ export const useHeader = () => {
       })) || []
   );
 
-  const desktopLinks = computed(() => [
-    {
-      label: 'Videos',
-      icon: 'i-lucide-square-play',
-      to: '/',
-    },
-    {
-      label: 'Categories',
-      icon: 'i-lucide-chart-bar-stacked',
-      to: '/categories',
-      children: categoryChildren.value,
-    },
-    {
-      label: 'Administrations',
-      icon: 'i-lucide-shield',
-      to: '/admin',
-      children: [
-        {
-          label: 'Videos',
-          icon: 'i-lucide-image-play',
-          to: '/admin/videos',
-        },
-        {
-          label: 'Catégories',
-          icon: 'i-lucide-chart-bar-stacked',
-          to: '/admin/categories',
-        },
-        {
-          label: 'Tags',
-          icon: 'i-lucide-tag',
-          to: '/admin/tags',
-        },
-        {
-          label: 'Comptes',
-          icon: 'i-lucide-user-round-cog',
-          to: '/admin/accounts',
-        },
-      ],
-    },
-    {
-      label: 'Mon compte',
-      icon: 'i-lucide-circle-user-round',
-      to: '/myaccount',
-    },
-  ]);
+  const {isAdmin, isLoginIn} = useAuth();
 
-  const mobileLinks = [
-    {
-      label: 'Videos',
-      icon: 'i-lucide-square-play',
-      to: '/',
-    },
-    {
-      label: 'Categories',
-      icon: 'i-lucide-chart-bar-stacked',
-      to: '/categories',
-    },
-    {
-      label: 'Administrations',
-      icon: 'i-lucide-shield',
-      to: '/admin',
-    },
-    {
-      label: 'My account',
-      icon: 'i-lucide-circle-user-round',
-      to: '/myaccount',
-    },
-  ];
+
+  const desktopLinks = computed(() => {
+    const links = [
+      {
+        label: 'Videos',
+        icon: 'i-lucide-square-play',
+        to: '/',
+      },
+      {
+        label: 'Categories',
+        icon: 'i-lucide-chart-bar-stacked',
+        to: '/categories',
+        children: categoryChildren.value,
+      },
+    ];
+
+    if(isAdmin.value){
+      links.push( {
+        label: 'Administrations',
+        icon: 'i-lucide-shield',
+        to: '/admin',
+        children: [
+          {
+            label: 'Videos',
+            icon: 'i-lucide-image-play',
+            to: '/admin/videos',
+          },
+          {
+            label: 'Catégories',
+            icon: 'i-lucide-chart-bar-stacked',
+            to: '/admin/categories',
+          },
+          {
+            label: 'Tags',
+            icon: 'i-lucide-tag',
+            to: '/admin/tags',
+          },
+          {
+            label: 'Comptes',
+            icon: 'i-lucide-user-round-cog',
+            to: '/admin/accounts',
+          },
+        ],
+      });
+    }
+
+    if(isLoginIn.value){
+      links.push( {
+        label: 'Mon compte',
+        icon: 'i-lucide-circle-user-round',
+        to: '/myaccount',
+      })
+    }
+
+    return links;
+  });
+
+  const mobileLinks = computed(() => {
+    const links = [
+      {
+        label: 'Videos',
+        icon: 'i-lucide-square-play',
+        to: '/',
+      },
+      {
+        label: 'Categories',
+        icon: 'i-lucide-chart-bar-stacked',
+        to: '/categories',
+        children: categoryChildren.value,
+      },
+    ];
+
+    if(isAdmin.value){
+      links.push({
+        label: 'Administrations',
+        icon: 'i-lucide-shield',
+        to: '/admin',
+      });
+    }
+
+
+    if(isLoginIn.value){
+      links.push( {
+        label: 'Mon compte',
+        icon: 'i-lucide-circle-user-round',
+        to: '/myaccount',
+      })
+    };
+
+    return links;
+  })
 
   return {
     desktopLinks,
