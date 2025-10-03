@@ -5,7 +5,8 @@ import { definePageMeta } from '#imports';
 import Error from '~/components/layout/Error.vue';
 
 definePageMeta({
-  searchPagination: true
+  searchPagination: true,
+  middleware: 'admin'
 });
 useHead({
   title: 'Meltix | Gestion des vidéos'

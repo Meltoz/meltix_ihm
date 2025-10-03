@@ -10,6 +10,32 @@ export default defineNuxtConfig({
     { src: '~/plugins/gsap.ts', mode: 'client', ssr: false },
     { src: '~/plugins/lenis.ts', mode: 'client', ssr: false },
   ],
+  hooks: {
+    'pages:extend'(pages) {
+      function setMiddleware(pages: NuxtPage[]) {
+        for (const page of pages) {
+          if (page.path.startsWith('/admin')) {
+            page.meta ||= {};
+            page.meta.middleware ||= [];
+            if (!page.meta.middleware.includes('admin')) {
+              page.meta.middleware.push('admin');
+            }
+          }
+          if (!page.path.startsWith('/login')) {
+            page.meta ||= {};
+            page.meta.middleware ||= [];
+            if (!page.meta.middleware.includes('auth')) {
+              page.meta.middleware.push('auth');
+            }
+          }
+          if (page.children) {
+            setMiddleware(page.children);
+          }
+        }
+      }
+      setMiddleware(pages);
+    },
+  },
   modules: ['@nuxt/ui', '@nuxtjs/i18n'],
   runtimeConfig: {
     public: {
