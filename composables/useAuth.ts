@@ -29,30 +29,29 @@ export const useAuth = () => {
 
   const fetchUser = async () => {
     try {
-      user.value = await me()
+      user.value = await me();
     } catch (err: any) {
       if (err?.status === 401 && !hasRefreshed.value) {
-        hasRefreshed.value = true
+        hasRefreshed.value = true;
         try {
-          await refresh()
-          return await fetchUser()
+          await refresh();
+          return await fetchUser();
         } catch {
-          user.value = null
+          user.value = null;
         }
       } else {
-        user.value = null
+        user.value = null;
       }
     }
   };
 
   const refresh = async () => {
-    try{
-      await refreshAuth()
-    }
-    catch {
+    try {
+      await refreshAuth();
+    } catch {
       user.value = null;
     }
-  }
+  };
 
   return {
     user: readonly(user),
