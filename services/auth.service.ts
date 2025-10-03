@@ -15,7 +15,7 @@ export const me = async (): Promise<UserAdmin> => {
     method: HTTP_METHODS.GET,
   });
 };
-export const refresh = async (): Promise<void> => {
+export const refreshAuth = async (): Promise<void> => {
   await useFetchCustom<string>(`refresh`, {
     method: HTTP_METHODS.POST,
     credentials: 'include',
