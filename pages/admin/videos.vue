@@ -37,8 +37,8 @@ watch(isUncategorisedVideoLoading, (val) => {
   <main class="w-full">
     <div v-if="isUncategorisedVideosSuccess">
       <section class="mb-2 flex flex-col md:flex-row items-start md:justify-between space-y-3">
-        <h2 class="text-2xl md:text-3xl font-medium">Vidéo non catégorisés <span class="italic">({{uncategorisedVideos?.totalCount}} videos)</span></h2>
-        <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20 cursor-pointer disabled:bg-gray-600" @click="handleScanClick" :disabled="isRequestScanLoading"/>
+        <h2 class="text-2xl md:text-3xl font-medium">Vidéos non catégorisés <span class="italic">({{uncategorisedVideos?.totalCount}} videos)</span></h2>
+        <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20 cursor-pointer  disabled:bg-gray-600" @click="handleScanClick" :disabled="isRequestScanLoading"/>
       </section>
       <section class="my-2">
         <button @click="sortDirection='descending'">Nouvelles importation</button>
