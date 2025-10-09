@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import Header from '~/components/layout/header.vue';
 </script>
 
@@ -8,7 +7,7 @@ import Header from '~/components/layout/header.vue';
     <Header class="sticky top-0 backdrop-blur-lg z-50"/>
     <slot />
   </div>
-</template>
+</script>
 
 <style scoped>
 
