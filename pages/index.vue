@@ -6,7 +6,7 @@ import Error from '~/components/layout/Error.vue';
 
 definePageMeta({
   pageTransition: transitionConfig,
-  searchPagination: true
+  searchPagination: true,
 });
 
 useHead({

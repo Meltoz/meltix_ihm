@@ -21,7 +21,14 @@ export default defineNuxtConfig({
               page.meta.middleware.push('admin');
             }
           }
-          if (!page.path.startsWith('/login')) {
+          if (!page.path.startsWith('/onboarding')) {
+            page.meta ||= {};
+            page.meta.middleware ||= [];
+            if (!page.meta.middleware.includes('has-on-boarding')) {
+              page.meta.middleware.push('has-on-boarding');
+            }
+          }
+          if (!page.path.startsWith('/login') && !page.path.startsWith('/onboarding')) {
             page.meta ||= {};
             page.meta.middleware ||= [];
             if (!page.meta.middleware.includes('auth')) {

@@ -95,7 +95,7 @@ watch(isAllCategoriesLoading, (val) => {
                       :key="category.id"
                       @delete="handleDeleteCategoryClick(category)"
                       @edit="handleCreateCategoryClick(category)">
-            <p>{{category.name}}</p>
+            <p class="capitalize">{{category.name}}</p>
           </admin-card>
       </section>
       <section v-if="allCategories.totalCount > pageSize" class="flex justify-center my-8">

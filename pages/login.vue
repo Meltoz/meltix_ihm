@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+definePageMeta({
+  layout: 'fullscreen',
+})
 const {login, isLoginIn} = useAuth();
 
 const pseudo = ref("");
@@ -8,6 +10,7 @@ const password = ref("");
 const handleLogin = () => {
   try{
     login(pseudo.value, password.value);
+    navigateTo('/')
   }
   catch (error) {
     console.log(error);
