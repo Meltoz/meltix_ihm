@@ -14,7 +14,6 @@ const name = ref<string>(props.category.name);
 
 const handleSaveClick = () => {
   const c:Category = {...props.category, name: name.value};
-  console.log(c)
   emit('close', c);
 }
 </script>

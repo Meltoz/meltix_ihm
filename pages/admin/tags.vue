@@ -38,7 +38,6 @@ const handleEditClick = async(event: Tag) => {
 
   const tag = await instance.result;
 
-  console.log(tag)
   if(!tag) return;
 
   try{

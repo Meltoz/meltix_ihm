@@ -6,7 +6,6 @@ import Error from '~/components/layout/Error.vue';
 
 definePageMeta({
   searchPagination: true,
-  middleware: 'admin'
 });
 useHead({
   title: 'Meltix | Gestion des vidéos'
@@ -24,7 +23,6 @@ const {uncategorisedVideos, isUncategorisedVideoLoading, isUncategorisedVideosSu
 const { requestScanAsync, isRequestScanLoading, isRequestScanSuccess, isRequestScanError } = useRequestScan();
 
 const handleScanClick = async () => {
-  console.log("Scan click");
   await requestScanAsync();
 }
 watch(isUncategorisedVideoLoading, (val) => {
@@ -40,7 +38,7 @@ watch(isUncategorisedVideoLoading, (val) => {
         <h2 class="text-2xl md:text-3xl font-medium">Vidéos non catégorisés <span class="italic">({{uncategorisedVideos?.totalCount}} videos)</span></h2>
         <UButton color="info" label="Scan"  class="py-3 w-full md:w-fit md:px-20 cursor-pointer  disabled:bg-gray-600" @click="handleScanClick" :disabled="isRequestScanLoading"/>
       </section>
-      <section class="my-2">
+      <section class="my-2 flex gap-5">
         <button @click="sortDirection='descending'">Nouvelles importation</button>
         <button @click="sortDirection='ascending'">Les plus anciennes</button>
       </section>

@@ -1,10 +1,15 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['admin']
+});
+
 import { useDetailVideo, useUpdateVideo } from '~/composables/query/video.query';
 import { z } from 'zod';
 import { useAllCategories } from '~/composables/query/category.query';
 import { useDebounce } from '@vueuse/shared';
 import type { VideoEdit } from '~/models/video';
 import type { FormErrorEvent, FormSubmitEvent } from '#ui/types';
+
 
 const route = useRoute();
 const config = useRuntimeConfig();

@@ -14,8 +14,6 @@ export const useAuth = () => {
       hasRefreshed.value = false;
       loginUser(pseudo, password);
       await fetchUser();
-
-      console.log(user.value);
     } catch (error) {
       console.error(error);
     }
