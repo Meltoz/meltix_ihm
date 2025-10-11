@@ -9,13 +9,12 @@ import { computed, unref, type Ref } from 'vue';
 import {
   getAllVideos,
   getDetail,
-  getLatest,
   getRecommendations,
   getUncategorisedVideos,
   requestScanVideo,
   updateVideo,
 } from '~/services/video.service';
-import type { Video, VideoCard } from '~/models/video';
+import type { VideoCard, VideoEdit } from '~/models/video';
 
 // Keys
 export const VIDEO_QUERY_KEYS = {

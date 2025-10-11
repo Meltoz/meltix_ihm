@@ -7,7 +7,7 @@ import Header from '~/components/layout/header.vue';
     <Header class="sticky top-0 backdrop-blur-lg z-50"/>
     <slot />
   </div>
-</script>
+</template>
 
 <style scoped>
 
