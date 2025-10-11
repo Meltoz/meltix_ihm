@@ -73,7 +73,6 @@ export const getRecommendations = async (
 
 export const updateVideo = async (video: VideoEdit): Promise<Video> => {
   const formData = new FormData();
-  console.log(video);
 
   // On mappe les propriétés de l'objet Video dans le FormData
   Object.entries(video).forEach(([key, value]) => {

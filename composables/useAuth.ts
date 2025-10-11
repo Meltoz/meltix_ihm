@@ -15,7 +15,6 @@ export const useAuth = () => {
       loginUser(pseudo, password);
       await fetchUser();
 
-      console.log(user.value);
     } catch (error) {
       console.error(error);
     }

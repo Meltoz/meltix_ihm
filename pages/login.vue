@@ -18,7 +18,6 @@ const handleLogin = () => {
 }
 
 watch(isLoginIn, (val) => {
-  console.log('valeur isLoginIn', val);
   if (val)
     navigateTo("/")
 }, {immediate: true});

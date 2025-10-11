@@ -2,6 +2,8 @@
 import { useDetailVideo, useGetRecommendation } from '~/composables/query/video.query';
 import { Pen } from 'lucide-vue-next';
 
+const {isAdmin} = useAuth();
+
 const route = useRoute();
 const {startLoading, stopLoading} = useLoading();
 
@@ -41,7 +43,7 @@ const handleClickEdit = () => {
         </p>
         <tags-card v-for="tag in video?.tags" :name="tag" />
       </div>
-      <Pen @click="handleClickEdit" class="cursor-pointer" />
+      <Pen v-if="isAdmin" @click="handleClickEdit" class="cursor-pointer" />
     </section>
 
     <div v-if="video">
@@ -59,7 +61,7 @@ const handleClickEdit = () => {
       <video-card v-for="video in recommendations" :video="video" size="s" />
     </section>
     <div v-if="hasNextRecommendations" class="flex justify-center my-5">
-      <button class="cursor-pointer w-1/2 bg-red-300 py-2" @click="fetchNextRecommendations">
+      <button class="cursor-pointer w-1/2 bg-blue-200 text-black/90 font-bold py-2" @click="fetchNextRecommendations">
         Voir plus
       </button>
     </div>

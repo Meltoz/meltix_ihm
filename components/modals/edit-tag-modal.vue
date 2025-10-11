@@ -15,7 +15,6 @@ const name = ref<string>(props.tag.name);
 
 const handleSaveClick = () => {
   const t: Tag = {...props.tag, name: name.value};
-  console.log('t', t);
   emit('close', t);
 }
 </script>

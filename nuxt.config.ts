@@ -11,35 +11,38 @@ export default defineNuxtConfig({
     { src: '~/plugins/lenis.ts', mode: 'client', ssr: false },
   ],
   hooks: {
-    'pages:extend'(pages) {
+    'pages:resolved'(pages) {
       function setMiddleware(pages: NuxtPage[]) {
         for (const page of pages) {
+          page.meta ||= {};
+          page.meta.middleware ||= [];
+
+          const middlewares = new Set(page.meta.middleware);
+
+          // Admin
           if (page.path.startsWith('/admin')) {
-            page.meta ||= {};
-            page.meta.middleware ||= [];
-            if (!page.meta.middleware.includes('admin')) {
-              page.meta.middleware.push('admin');
-            }
+            middlewares.add('admin');
           }
+
+          // Onboarding
           if (!page.path.startsWith('/onboarding')) {
-            page.meta ||= {};
-            page.meta.middleware ||= [];
-            if (!page.meta.middleware.includes('has-on-boarding')) {
-              page.meta.middleware.push('has-on-boarding');
-            }
+            middlewares.add('has-on-boarding');
           }
+
+          // Auth
           if (!page.path.startsWith('/login') && !page.path.startsWith('/onboarding')) {
-            page.meta ||= {};
-            page.meta.middleware ||= [];
-            if (!page.meta.middleware.includes('auth')) {
-              page.meta.middleware.push('auth');
-            }
+            middlewares.delete('auth');
+            page.meta.middleware = ['auth', ...middlewares];
+          } else {
+            page.meta.middleware = [...middlewares];
           }
+
           if (page.children) {
             setMiddleware(page.children);
           }
         }
       }
+
       setMiddleware(pages);
     },
   },
