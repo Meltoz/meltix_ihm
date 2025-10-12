@@ -1,5 +1,5 @@
 <template>
-  <UMain class="mx-2 overflow-x-hidden">
+  <UMain class="mx-2">
     <Header class="sticky top-0 backdrop-blur-lg z-50"/>
     <div class="flex">
       <div
